@@ -20,6 +20,14 @@ interface AfspraakDao {
     @Query("SELECT * FROM Afspraak WHERE oppasser = :oppasser")
     fun getAllAppointsmentsByOppasser(oppasser: String): Flow<List<Afspraak>>
 
+    /**
+     * Haalt de afspraak op basis van [Afspraak.beginmoment], [Afspraak.eindmoment] en [Afspraak.oppasser] op.
+     *
+     * Er ligt een unique key op de kolommen [Afspraak.beginmoment], [Afspraak.eindmoment] en [Afspraak.oppasser]
+     */
+    @Query("SELECT * FROM Afspraak WHERE beginmoment = :beginmoment AND eindmoment = :eindmoment AND oppasser = :oppasser")
+    fun checkIfTheAppointmentIsExists(beginmoment: String, eindmoment: String, oppasser: String): Flow<Afspraak>
+
     @Update
     suspend fun update(afspraak: Afspraak)
 

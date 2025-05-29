@@ -11,6 +11,8 @@ interface AfsprakenRepository {
 
     fun getAllAppointmentByUser(oppasser: String): Flow<List<Afspraak?>>
 
+    fun checkIfTheAppointmentIsExists(beginmoment: String, eindmoment: String, oppasser: String): Flow<Afspraak?>
+
     suspend fun updateAppointment(afspraak: Afspraak)
 
     suspend fun deleteAppointment(afspraak: Afspraak)
