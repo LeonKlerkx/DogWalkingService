@@ -3,7 +3,6 @@ package com.example.dogwalkingservice.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
 
 @Entity(tableName = "Gebruiker")
 data class Gebruiker (

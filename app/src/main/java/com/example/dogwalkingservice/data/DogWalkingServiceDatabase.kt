@@ -10,6 +10,8 @@ abstract class DogWalkingServiceDatabase : RoomDatabase() {
 
     abstract fun gebruikerDao(): GebruikerDao
 
+    abstract fun recensieDao(): RecensieDao
+
     companion object {
 
         /**

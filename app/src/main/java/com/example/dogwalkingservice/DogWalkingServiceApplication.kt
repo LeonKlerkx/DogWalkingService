@@ -7,12 +7,12 @@ import com.example.dogwalkingservice.data.DogWalkingServiceDatabase
 
 class DogWalkingServiceApplication : Application() {
 
-   /* lateinit var container: AppContainer
+    lateinit var container: AppContainer
 
     override fun onCreate() {
         super.onCreate()
         container = AppDataContainer(this)
-    }*/
+    }
 
     // Inladen room database
     val roomDatabase: DogWalkingServiceDatabase by lazy {
