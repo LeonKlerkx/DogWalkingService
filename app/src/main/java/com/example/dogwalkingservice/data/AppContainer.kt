@@ -11,6 +11,7 @@ interface AppContainer {
     val gebruikersRepository: GebruikersRepository
     val recensieRepository: RecensieRepository
     val afsprakenRepository: AfsprakenRepository
+    val hondenRepository: HondenRepository
 }
 
 /**
@@ -19,26 +20,34 @@ interface AppContainer {
 class AppDataContainer(private val context: Context) : AppContainer {
 
     /**
-     * Override the GebruikersRepository with the OfflineGebruikersRepository,
-     * so you can you this repository in the whole application.
+     * Override the [GebruikersRepository] with the [OfflineGebruikersRepository],
+     * so you can use this repository in the whole application.
      */
     override val gebruikersRepository: GebruikersRepository by lazy {
         OfflineGebruikersRepository(DogWalkingServiceDatabase.getDatabase(context).gebruikerDao())
     }
 
     /**
-     * Override the RecensieRepository with the OfflineRecensieRepository,
-     * so you can you this repository in the whole application.
+     * Override the [RecensieRepository] with the [OfflineRecensieRepository],
+     * so you can use this repository in the whole application.
      */
     override val recensieRepository: RecensieRepository by lazy {
         OfflineRecensieRepository(DogWalkingServiceDatabase.getDatabase(context).recensieDao())
     }
 
     /**
-     * Override the AfsprakenRepository with the OfflineAfsprakenRepository,
-     * so you can you this repository in the whole application.
+     * Override the [AfsprakenRepository] with the [OfflineAfsprakenRepository],
+     * so you can use this repository in the whole application.
      */
     override val afsprakenRepository: AfsprakenRepository by lazy {
         OfflineAfsprakenRepository(DogWalkingServiceDatabase.getDatabase(context).afspraakDao())
+    }
+
+    /**
+     * Override the [HondenRepository] with the [OfflineHondenRepository],
+     * so you can use this repository in the whole application.
+     */
+    override val hondenRepository: HondenRepository by lazy {
+        OfflineHondenRepository(DogWalkingServiceDatabase.getDatabase(context).hondDao())
     }
 }
