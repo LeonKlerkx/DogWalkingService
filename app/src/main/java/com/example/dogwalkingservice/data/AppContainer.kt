@@ -10,6 +10,7 @@ interface AppContainer {
 
     val gebruikersRepository: GebruikersRepository
     val recensieRepository: RecensieRepository
+    val afsprakenRepository: AfsprakenRepository
 }
 
 /**
@@ -31,5 +32,13 @@ class AppDataContainer(private val context: Context) : AppContainer {
      */
     override val recensieRepository: RecensieRepository by lazy {
         OfflineRecensieRepository(DogWalkingServiceDatabase.getDatabase(context).recensieDao())
+    }
+
+    /**
+     * Override the AfsprakenRepository with the OfflineAfsprakenRepository,
+     * so you can you this repository in the whole application.
+     */
+    override val afsprakenRepository: AfsprakenRepository by lazy {
+        OfflineAfsprakenRepository(DogWalkingServiceDatabase.getDatabase(context).afspraakDao())
     }
 }
