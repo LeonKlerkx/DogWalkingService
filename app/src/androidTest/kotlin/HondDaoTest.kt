@@ -100,6 +100,52 @@ class HondDaoTest {
     }
 
     /**
+     * Get the dog by the Primary Key.
+     */
+    @Test
+    @Throws(IOException::class)
+    fun daoGet_GetDogByPrimaryKey() = runBlocking {
+        // Insert an owner.
+        gebruikerDao.insert(owner1)
+
+        // Insert a dog.
+        hondDao.insert(dog1)
+
+        val getDog = hondDao
+            .getDogByPrimaryKey(dog1.chipNummer)
+            .first()
+
+        assertNotEquals(getDog, null)
+
+        assertEquals(getDog, dog1)
+    }
+
+    /**
+     * Get the dog by an invalid Primary Key.
+     */
+    @Test
+    @Throws(IOException::class)
+    fun daoGet_GetDogByWrongPrimaryKey_NoDogFound() = runBlocking {
+        // Insert an owner.
+        gebruikerDao.insert(owner2)
+
+        // Insert a dog
+        hondDao.insert(dog3)
+
+        val getDogWithValidPK = hondDao
+            .getDogByPrimaryKey(dog3.chipNummer)
+            .first()
+
+        assertEquals(getDogWithValidPK, dog3)
+
+        val getDogWithWrongPK = hondDao
+            .getDogByPrimaryKey(dog2.chipNummer)
+            .first()
+
+        assertEquals(getDogWithWrongPK, null)
+    }
+
+    /**
      * Get all dogs from a specific owner.
      */
     @Test

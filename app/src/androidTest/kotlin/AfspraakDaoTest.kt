@@ -115,6 +115,54 @@ class AfspraakDaoTest {
     }
 
     /**
+     * Get the appointment by the Primary Key.
+     */
+    @Test
+    @Throws(IOException::class)
+    fun daoGet_GetAppointmentByPrimaryKey() = runBlocking {
+        // Insert a oppasser.
+        gebruikerDao.insert(oppasser1)
+
+        // Insert an appointment.
+        afspraakDao.insert(appointment1)
+
+        val getAppointment = afspraakDao
+            .getAppointmentByPrimaryKey(appointment1.afspraakId) // Flow<List<Afspraak>>
+            .first() // List<Afspraak>
+
+        assertNotEquals(getAppointment, null)
+
+        assertEquals(getAppointment, appointment1)
+    }
+
+    /**
+     * Get the appointment by an invalid Primary Key.
+     */
+    @Test
+    @Throws(IOException::class)
+    fun daoGet_GetAppointmentByWrongPrimaryKey_NoAppointmentFound() = runBlocking {
+        // Insert a oppasser.
+        gebruikerDao.insert(oppasser2)
+
+        // Insert an appointment.
+        afspraakDao.insert(appointment2)
+
+        val getAppointmentWithValidPK = afspraakDao
+            .getAppointmentByPrimaryKey(appointment2.afspraakId)
+            .first()
+
+        // Afspraak met de juiste Primary Key is in de Database gevonden.
+        assertEquals(getAppointmentWithValidPK, appointment2)
+
+        val getAppointmentWithWrongPK = afspraakDao
+            .getAppointmentByPrimaryKey(appointment3.afspraakId)
+            .first()
+
+        // Afspraak met een onjuiste Primary Key is niet in de Database gevonden.
+        assertEquals(getAppointmentWithWrongPK, null)
+    }
+
+    /**
      * Get all appointments from a specific oppasser.
      */
     @Test
