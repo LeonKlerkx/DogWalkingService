@@ -208,7 +208,7 @@ class AfspraakDaoTest {
             .getAllAppointsmentsByOppasser(oppasser1.gebruikersnaam)
             .first()
 
-        // Object cannot be found, because the objects is removed in the Database.
+        // Object cannot be found, because the objects are removed in the Database.
         assertEquals(getAppointment.isEmpty(), true)
     }
 }
