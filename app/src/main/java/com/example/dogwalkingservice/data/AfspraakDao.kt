@@ -15,6 +15,13 @@ interface AfspraakDao {
     suspend fun insert(afspraak: Afspraak)
 
     /**
+     * Retrieved the appointment with the Primary Key,
+     * so you can show the appointment when there is a dog sign up [AanmeldenHond] in this appointment [Afspraak].
+     */
+    @Query("SELECT * FROM Afspraak WHERE afspraakId = :afspraakId")
+    fun getAppointmentByPrimaryKey(afspraakId: Int): Flow<Afspraak>
+
+    /**
      * Haalt alle afspraken van de geselecteerde oppasser op.
      */
     @Query("SELECT * FROM Afspraak WHERE oppasser = :oppasser")

@@ -1,10 +1,10 @@
 package com.example.dogwalkingservice.data
 
-import kotlinx.coroutines.flow.Flow
-
 class OfflineAfsprakenRepository(private val afspraakDao: AfspraakDao) : AfsprakenRepository {
 
     override suspend fun insertAppointment(afspraak: Afspraak) = afspraakDao.insert(afspraak)
+
+    override fun getAppointmentByPrimaryKey(afspraakId: Int) = afspraakDao.getAppointmentByPrimaryKey(afspraakId)
 
     override fun getAllAppointmentByUser(oppasser: String) = afspraakDao.getAllAppointsmentsByOppasser(oppasser)
 
