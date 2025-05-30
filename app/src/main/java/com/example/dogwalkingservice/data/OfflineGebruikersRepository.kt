@@ -1,7 +1,5 @@
 package com.example.dogwalkingservice.data
 
-import kotlinx.coroutines.flow.Flow
-
 /**
  * Repository die de Database functies biedt voor de tabel Gebruiker.
  */
