@@ -15,6 +15,13 @@ interface HondDao {
     suspend fun insert(hond: Hond)
 
     /**
+     * Retrieved the dog with the Primary Key,
+     * so you can show the dog when this is sign up [AanmeldenHond] in an appointment [Afspraak].
+     */
+    @Query("SELECT * FROM Hond WHERE chipnummer = :chipnummer")
+    fun getDogByPrimaryKey(chipnummer: String): Flow<Hond>
+
+    /**
      * Retrieved all dogs from the selected owner.
      */
     @Query("SELECT * FROM Hond WHERE eigenaar = :eigenaar")

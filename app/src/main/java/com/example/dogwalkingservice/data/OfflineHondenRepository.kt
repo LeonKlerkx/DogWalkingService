@@ -4,6 +4,8 @@ class OfflineHondenRepository(private val hondDao: HondDao) : HondenRepository {
 
     override suspend fun insertDog(hond: Hond) = hondDao.insert(hond)
 
+    override fun getDogByPrimaryKey(chipnummer: String) = hondDao.getDogByPrimaryKey(chipnummer)
+
     override fun getAllDogsFromOwner(eigenaar: String) = hondDao.getAllDogsFromOwner(eigenaar)
 
     override suspend fun updateDog(hond: Hond) = hondDao.update(hond)
