@@ -13,6 +13,7 @@ interface AppContainer {
     val afsprakenRepository: AfsprakenRepository
     val hondenRepository: HondenRepository
     val aanmeldenHondenRepository: AanmeldenHondenRepository
+    val afbeeldingHondenRepository: AfbeeldingHondenRepository
 }
 
 /**
@@ -58,5 +59,13 @@ class AppDataContainer(private val context: Context) : AppContainer {
      */
     override val aanmeldenHondenRepository: AanmeldenHondenRepository by lazy {
         OfflineAanmeldenHondenRepository(DogWalkingServiceDatabase.getDatabase(context).aanmeldenHondDao())
+    }
+
+    /**
+     * Override the [AfbeeldingHondenRepository] with the [OfflineAfbeeldingHondenRepository],
+     * so you can use this repository in the whole application.
+     */
+    override val afbeeldingHondenRepository: AfbeeldingHondenRepository by lazy {
+        OfflineAfbeeldingHondenRepository(DogWalkingServiceDatabase.getDatabase(context).afbeeldingHondDao())
     }
 }
