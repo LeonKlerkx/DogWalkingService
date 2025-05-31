@@ -20,5 +20,5 @@ interface AfbeeldingHondDao {
     fun getDogPictureByChipnummer(chipnummer: String): Flow<List<AfbeeldingHond>>
 
     @Delete
-    suspend fun update(afbeeldingHond: AfbeeldingHond)
+    suspend fun delete(afbeeldingHond: AfbeeldingHond)
 }

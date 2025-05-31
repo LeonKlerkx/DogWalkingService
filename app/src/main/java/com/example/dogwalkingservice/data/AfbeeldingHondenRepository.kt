@@ -11,5 +11,5 @@ interface AfbeeldingHondenRepository {
 
     fun getDogPictureByChipnummer(chipnummer: String): Flow<List<AfbeeldingHond?>>
 
-    suspend fun update(afbeeldingHond: AfbeeldingHond)
+    suspend fun delete(afbeeldingHond: AfbeeldingHond)
 }

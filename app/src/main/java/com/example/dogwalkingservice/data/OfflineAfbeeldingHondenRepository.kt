@@ -9,6 +9,6 @@ class OfflineAfbeeldingHondenRepository(private val afbeeldingHondDao: Afbeeldin
     override fun getDogPictureByChipnummer(chipnummer: String) =
         afbeeldingHondDao.getDogPictureByChipnummer(chipnummer)
 
-    override suspend fun update(afbeeldingHond: AfbeeldingHond) =
-        afbeeldingHondDao.update(afbeeldingHond)
+    override suspend fun delete(afbeeldingHond: AfbeeldingHond) =
+        afbeeldingHondDao.delete(afbeeldingHond)
 }
