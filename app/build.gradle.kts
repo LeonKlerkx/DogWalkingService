@@ -51,6 +51,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Viewmodel dependency.
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Navigation dependency.
+    implementation(libs.androidx.navigation.compose)
+
     // Room dependencies.
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
