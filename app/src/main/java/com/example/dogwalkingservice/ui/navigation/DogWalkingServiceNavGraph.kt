@@ -11,6 +11,9 @@ import com.example.dogwalkingservice.ui.home.HomeScreenOwner
 import com.example.dogwalkingservice.ui.home.HomeScreenOwnerDestination
 import com.example.dogwalkingservice.ui.login.LoginDestination
 import com.example.dogwalkingservice.ui.login.LoginScreen
+import com.example.dogwalkingservice.ui.password.PasswordDestination
+import com.example.dogwalkingservice.ui.password.PasswordScreen
+import com.example.dogwalkingservice.ui.password.PasswordScreenPreview
 
 @Composable
 fun DogWalkingServiceNavGraph(
@@ -22,7 +25,7 @@ fun DogWalkingServiceNavGraph(
         startDestination = LoginDestination.route,
         modifier = modifier
     ) {
-        // Inlog screen.
+        // Login screen.
         composable(route = LoginDestination.route) {
             LoginScreen(
                 navigateToStartPageOwner = {
@@ -40,7 +43,7 @@ fun DogWalkingServiceNavGraph(
                     navController.navigate(HomeScreenDogSitterDestination.route)
                 },
                 navigateToForgetPassword = {
-
+                    navController.navigate(PasswordDestination.route)
                 },
                 navigateToRegisterUser = {}
             )
@@ -57,6 +60,13 @@ fun DogWalkingServiceNavGraph(
         composable(route = HomeScreenDogSitterDestination.route) {
             HomeScreenDogSitter(
 
+            )
+        }
+
+        // Password screen.
+        composable(route = PasswordDestination.route) {
+            PasswordScreen(
+                navigateToLoginUser = {}
             )
         }
     }

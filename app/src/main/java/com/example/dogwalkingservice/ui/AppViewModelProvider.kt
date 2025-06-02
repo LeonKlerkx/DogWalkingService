@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.dogwalkingservice.DogWalkingServiceApplication
 import com.example.dogwalkingservice.ui.login.LoginViewModel
+import com.example.dogwalkingservice.ui.password.PasswordViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire Inventory app
@@ -16,6 +17,12 @@ object AppViewModelProvider {
         // Initializer for LoginViewModel.
         initializer {
             LoginViewModel(
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for PasswordViewModel.
+        initializer {
+            PasswordViewModel(
                 gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
             )
         }
