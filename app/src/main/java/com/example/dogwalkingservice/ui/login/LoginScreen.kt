@@ -57,35 +57,20 @@ fun LoginScreen(
         navigateToRegisterUser = navigateToRegisterUser,
         loginClick = {
             coroutineScope.launch {
-                // Email address or password is not filled in.
-                if (viewModel.loginUiState.emailAddress.isEmpty() || viewModel.loginUiState.password.isEmpty()) {
-                    Toast.makeText(context, "Vul het e-mailadres en het wachtwoord in.", Toast.LENGTH_LONG)
-                        .show()
-                }
-                // The user filled in the right login credentials
-                else {
+                try {
                     // Get the object of the sign in user.
                     val getUser = viewModel.checkLoginCredentials()
 
                     // When the user does exists in the Database and has the role Owner,
                     // send the user to the homepage of the Owner.
-                    if (getUser?.rolnaam?.equals("Eigenaar") == true) {
-                        navigateToStartPageOwner()
-                        Toast.makeText(context, "Welkom ${getUser.gebruikersnaam}!", Toast.LENGTH_LONG)
-                            .show()
+                    when (getUser) {
+                        "Eigenaar" -> navigateToStartPageOwner()
+                        "Oppasser" -> navigateToStartPageDogSitter()
                     }
-                    // When the user does exists in the Database and has the role DogSitter,
-                    // send the user to the homepage of the DogSitter.
-                    else if (getUser?.rolnaam?.equals("Oppasser") == true) {
-                        navigateToStartPageDogSitter()
-                        Toast.makeText(context, "Welkom ${getUser.gebruikersnaam}!", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                    // The user does not fill in the right login credentials
-                    else {
-                        Toast.makeText(context, "E-mailadres en/of wachtwoord komen niet overeen.", Toast.LENGTH_LONG)
-                            .show()
-                    }
+
+                }
+                catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
             }
         },

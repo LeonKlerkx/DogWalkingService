@@ -3,7 +3,9 @@ package com.example.dogwalkingservice.ui.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
+import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.data.Gebruiker
 import com.example.dogwalkingservice.data.GebruikersRepository
 import kotlinx.coroutines.flow.first
@@ -51,25 +53,27 @@ class LoginViewModel(
     }
 
     /**
-     * Controleert of de gebruiker het juiste emailadres en wachtwoord heeft ingevuld.
+     * Check if the user filled in the right email address and password,
+     * and return the name of the role of the user.
      */
-    suspend fun checkLoginCredentials(): Gebruiker? {
+    suspend fun checkLoginCredentials(): String {
         if (validateUserInput()) {
             val checkUserCredentials = gebruikersRepository
                 .getUserbyEmailAddress(loginUiState.emailAddress)
                 .first()
 
-            // Controleert op een veilige manier de waarde van emailadres (= ?. )
+            /* Controleert op een veilige manier (= ?. ) of de combinatie van
+               het e-mailadres en het wachtwoord in de Database bestaat. */
             if (checkUserCredentials?.emailadres.equals(loginUiState.emailAddress) &&
                 checkUserCredentials?.wachtwoord.equals(loginUiState.password)) {
                 // Object is niet NULL. Het object teruggeven (met !! (= niet nullable objecten))
-                return checkUserCredentials!!
+                return checkUserCredentials!!.rolnaam
             }
             else
-                return null
+                throw IllegalArgumentException("E-mailadres en/of wachtwoord komen niet overeen.")
         }
 
-        return null
+        throw IllegalArgumentException("Vul het e-mailadres en het wachtwoord in.")
     }
 }
 

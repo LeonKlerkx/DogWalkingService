@@ -4,10 +4,16 @@
     <string name="login_title">Login</string>
     <string name="home_screen_owner">Startpagina eigenaar</string>
     <string name="home_screen_dog_sitter">Startpagina honden oppasser</string>
+    <string name="password_screen">Wachtwoord wijzigen</string>
 
     <string name="login_screen_email_address">E-mailadres:</string>
     <string name="login_screen_password">Wachtwoord:</string>
     <string name="login_screen_log_in">Inloggen</string>
     <string name="login_screen_forgot_password">Wachtwoord vergeten</string>
     <string name="login_screen_no_account">Geen account? Meld je hier aan!</string>
+
+    <string name="password_screen_email_address">E-mailadres:</string>
+    <string name="password_screen_new_password">Wachtwoord:</string>
+    <string name="password_screen_repeat_new_password">Herhaal wachtwoord:</string>
+    <string name="password_screen_edit_password">Wijzigen</string>
 </resources>
