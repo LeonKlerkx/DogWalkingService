@@ -268,7 +268,7 @@ class RegistrationViewModel(
                 .getUserByUsername(registrationUiState.userName)
                 .first()
 
-            if (checkUserNameExists?.gebruikersnaam.equals(registrationUiState.emailAddress)) {
+            if (checkUserNameExists?.gebruikersnaam.equals(registrationUiState.userName)) {
                 throw IllegalArgumentException("De naam bestaat al! Vul een andere naam in.")
             }
 
