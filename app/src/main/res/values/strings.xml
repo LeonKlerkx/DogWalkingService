@@ -12,6 +12,25 @@
     <string name="login_screen_forgot_password">Wachtwoord vergeten</string>
     <string name="login_screen_no_account">Geen account? Meld je hier aan!</string>
 
+    <string name="registration_title">Registratie</string>
+    <string name="registration_email_address">E-mailadres:</string>
+    <string name="registration_password">Wachtwoord:</string>
+    <string name="registration_repeat_password">Herhaal wachtwoord:</string>
+    <string name="registration_radio_button_owner">Eigenaar</string>
+    <string name="registration_radio_button_dog_sitter">Oppasser</string>
+    <string name="registration_button_register">Registreer</string>
+
+    <string name="additional_user_information_title">Persoonlijke informatie</string>
+    <string name="additional_user_information_name">Naam:</string>
+    <string name="additional_user_information_email_address">E-mailadres:</string>
+    <string name="additional_user_information_phone_number">Telefoonnummer:</string>
+    <string name="additional_user_information_date_of_birth">Geboortedatum:</string>
+    <string name="additional_user_information_address">Adres:</string>
+    <string name="additional_user_information_postal_code">Postcode:</string>
+    <string name="additional_user_information_place_of_residence">Woonplaats:</string>
+    <string name="additional_user_information_personal_description">Omschrijving:</string>
+    <string name="additional_user_information_button_register">Registreer</string>
+
     <string name="password_screen_email_address">E-mailadres:</string>
     <string name="password_screen_new_password">Wachtwoord:</string>
     <string name="password_screen_repeat_new_password">Herhaal wachtwoord:</string>

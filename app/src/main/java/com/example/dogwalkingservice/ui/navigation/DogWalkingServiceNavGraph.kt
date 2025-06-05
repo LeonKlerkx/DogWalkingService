@@ -13,7 +13,8 @@ import com.example.dogwalkingservice.ui.login.LoginDestination
 import com.example.dogwalkingservice.ui.login.LoginScreen
 import com.example.dogwalkingservice.ui.password.PasswordDestination
 import com.example.dogwalkingservice.ui.password.PasswordScreen
-import com.example.dogwalkingservice.ui.password.PasswordScreenPreview
+import com.example.dogwalkingservice.ui.registration.RegistrationDestination
+import com.example.dogwalkingservice.ui.registration.RegistrationScreen
 
 @Composable
 fun DogWalkingServiceNavGraph(
@@ -45,7 +46,9 @@ fun DogWalkingServiceNavGraph(
                 navigateToForgetPassword = {
                     navController.navigate(PasswordDestination.route)
                 },
-                navigateToRegisterUser = {}
+                navigateToRegisterUser = {
+                    navController.navigate(RegistrationDestination.route)
+                }
             )
         }
 
@@ -67,6 +70,26 @@ fun DogWalkingServiceNavGraph(
         composable(route = PasswordDestination.route) {
             PasswordScreen(
                 navigateToLoginUser = {}
+            )
+        }
+
+        // Register screen.
+        composable(route = RegistrationDestination.route) {
+            RegistrationScreen(
+                navigateToStartPageOwner = {
+                    /* Remove the LoginScreen from the BackStack,
+                       so the login screen won't display when you go back. */
+                    navController.popBackStack()
+
+                    navController.navigate(HomeScreenOwnerDestination.route)
+                },
+                navigateToStartPageDogSitter = {
+                    /* Remove the LoginScreen from the BackStack,
+                       so the login screen won't display when you go back. */
+                    navController.popBackStack()
+
+                    navController.navigate(HomeScreenDogSitterDestination.route)
+                }
             )
         }
     }
