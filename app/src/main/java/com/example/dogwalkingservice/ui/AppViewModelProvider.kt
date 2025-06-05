@@ -18,13 +18,15 @@ object AppViewModelProvider {
         // Initializer for LoginViewModel.
         initializer {
             LoginViewModel(
-                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }
         // Initializer for PasswordViewModel.
         initializer {
             PasswordViewModel(
-                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }
         // Initializer for RegistrationViewModel.

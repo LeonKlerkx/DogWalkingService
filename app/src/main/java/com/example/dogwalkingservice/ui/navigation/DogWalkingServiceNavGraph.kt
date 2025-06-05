@@ -55,7 +55,17 @@ fun DogWalkingServiceNavGraph(
         // Homepage owner.
         composable(route = HomeScreenOwnerDestination.route) {
             HomeScreenOwner(
+                testenNavigateToPasswordScreen = {
+                    navController.navigate(PasswordDestination.route)
+                },
+                uitloggen = {
+                    /* Remove the current page, HomeScreenOwnerDestination, from the BackStack,
+                       so when you will close the app, you won't go to the previous screen and see the homepage of the owner again.   */
+                    navController.popBackStack()
 
+                    // Open the LoginScreen where the user can login again.
+                    navController.navigate(LoginDestination.route)
+                }
             )
         }
 

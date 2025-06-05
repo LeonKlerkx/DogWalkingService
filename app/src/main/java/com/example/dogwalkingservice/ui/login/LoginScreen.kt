@@ -48,6 +48,10 @@ fun LoginScreen(
 
     val context = LocalContext.current
 
+    /* Delete the email address from the DataStore in the entry screen of the application,
+        so the user can always fill in an email address. */
+    viewModel.deleteEmailAddressInDataStore()
+
     LoginBody(
         emailaddress = viewModel.loginUiState.emailAddress,
         onChangeEmailAddress = viewModel::updateEmailaddress,
@@ -60,6 +64,9 @@ fun LoginScreen(
                 try {
                     // Get the object of the sign in user.
                     val getUser = viewModel.checkLoginCredentials()
+
+                    // Save the email address from the user in the DataStore.
+                    viewModel.saveEmailAddressInDataStore(viewModel.loginUiState.emailAddress)
 
                     // When the user does exists in the Database and has the role Owner,
                     // send the user to the homepage of the Owner.

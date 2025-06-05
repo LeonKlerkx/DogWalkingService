@@ -12,6 +12,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +45,10 @@ fun PasswordScreen(
 
     val context = LocalContext.current
 
+    val getDataStoreEmailaddress by viewModel.uiStateDataStoreEmailAddress.collectAsState()
+
     PasswordBody(
+        dataStoreEmailAddress = getDataStoreEmailaddress.emailaddress,
         emailAddress = viewModel.passwordUiState.emailaddress,
         onChangeEmailAddress = viewModel::updateEmailAddress,
         password = viewModel.passwordUiState.password,
@@ -53,8 +58,16 @@ fun PasswordScreen(
         changePassword = {
             coroutineScope.launch {
                 try {
+                    /* Only if the user is signed in and he wants to change the password,
+                       the email address will be added in the passwordUiState of the viewModel.  */
+                    if (viewModel.passwordUiState.emailaddress.isEmpty())
+                        viewModel.updateEmailAddressWithTheDataStoreEmailAddress(getDataStoreEmailaddress.emailaddress)
+
                     val resultOfUpdatingPassword = viewModel
                         .checkEmailAddressExistsToUpdatePassword()
+
+                    // Save the email address from the user in the DataStore.
+                    viewModel.saveEmailAddressInDataStore(viewModel.passwordUiState.emailaddress)
 
                     Toast.makeText(context, resultOfUpdatingPassword, Toast.LENGTH_LONG).show()
                 }
@@ -62,19 +75,24 @@ fun PasswordScreen(
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
             }
+        },
+        removeEmailaddressFromDatastore = {
+            viewModel.deleteEmailAddressInDataStore()
         }
     )
 }
 
 @Composable
 fun PasswordBody(
+    dataStoreEmailAddress: String,
     emailAddress: String,
     onChangeEmailAddress: (String) -> Unit,
     password: String,
     onChangePassword: (String) -> Unit,
     repeatPassword: String,
     onChangeRepeatPassword: (String) -> Unit,
-    changePassword: () -> Unit
+    changePassword: () -> Unit,
+    removeEmailaddressFromDatastore: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +102,7 @@ fun PasswordBody(
     ) {
         // Text Email address:
         OutlinedTextField(
-            value = emailAddress,
+            value = dataStoreEmailAddress.ifEmpty { emailAddress },
             onValueChange = onChangeEmailAddress,
             label = {
                 Text(stringResource(R.string.password_screen_email_address))
@@ -95,7 +113,7 @@ fun PasswordBody(
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
             ),
             modifier = Modifier.fillMaxWidth(),
-            enabled = true,
+            enabled = if (dataStoreEmailAddress.isNotEmpty()) false else true,
             singleLine = true
         )
 
@@ -144,6 +162,13 @@ fun PasswordBody(
         ) {
             Text(stringResource(R.string.password_screen_edit_password))
         }
+
+        Button(
+            onClick = removeEmailaddressFromDatastore,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Verwijdert e-mailadres uit DataStore.")
+        }
     }
 }
 
@@ -152,13 +177,15 @@ fun PasswordBody(
 fun PasswordScreenPreview() {
     DogWalkingServiceTheme {
         PasswordBody(
+            dataStoreEmailAddress = "",
             emailAddress = "test@gmail.com",
             onChangeEmailAddress = {},
             password = "newPassword",
             onChangePassword = {},
             repeatPassword = "newPassword",
             onChangeRepeatPassword = {},
-            changePassword = {}
+            changePassword = {},
+            removeEmailaddressFromDatastore = {}
         )
     }
 }

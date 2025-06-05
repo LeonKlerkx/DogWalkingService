@@ -3,18 +3,19 @@ package com.example.dogwalkingservice.ui.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.example.dogwalkingservice.R
-import com.example.dogwalkingservice.data.Gebruiker
+import androidx.lifecycle.viewModelScope
 import com.example.dogwalkingservice.data.GebruikersRepository
+import com.example.dogwalkingservice.data.UserPreferencesRepository
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel to hold and retrieve the data of the screen.
  */
 class LoginViewModel(
-    private val gebruikersRepository: GebruikersRepository
+    private val gebruikersRepository: GebruikersRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     /**
@@ -22,6 +23,24 @@ class LoginViewModel(
      */
     var loginUiState by mutableStateOf(LoginUiState())
         private set
+
+    /**
+     * Save the email address into the DataStore.
+     */
+    fun saveEmailAddressInDataStore(emailAddress: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.saveEmailAddress(emailAddress)
+        }
+    }
+
+    /**
+     * Delete the email address from the DataStore.
+     */
+    fun deleteEmailAddressInDataStore() {
+        viewModelScope.launch {
+            userPreferencesRepository.deleteEmailaddress()
+        }
+    }
 
     /**
      * Update the [LoginUiState] with the new value of [LoginUiState.emailAddress].
