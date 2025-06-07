@@ -11,12 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
-import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
-import com.example.dogwalkingservice.ui.password.PasswordScreen
+import com.example.dogwalkingservice.ui.theme.DogWalkingServiceTheme
 
 object HomeScreenOwnerDestination : NavigationDestination {
     override val route = "HomeOwner"
@@ -25,12 +25,10 @@ object HomeScreenOwnerDestination : NavigationDestination {
 
 @Composable
 fun HomeScreenOwner(
-    testenNavigateToPasswordScreen: () -> Unit,
     navigateToSettingScreen: () -> Unit,
     navigateToPictureDogScreen: () -> Unit,
     navigateToOverviewDogScreen: () -> Unit,
     navigateToAddDogToAnAppointment: () -> Unit,
-    uitloggen: () -> Unit,
     // Open the HomeScreenOwnerViewModel in the AppViewModelProvider.Factory.
     viewModel: HomeScreenOwnerViewModel = viewModel(factory = AppViewModelProvider.Factory),
     modifier: Modifier = Modifier
@@ -42,17 +40,10 @@ fun HomeScreenOwner(
     HomeScreenOwnerBody(
         getEmailaddressFromDataStore = uiStateDataStoreEmailAddress,
         getUserRoleFromDataStore = uiStateDataStoreUserRole,
-        testenNavigateToPasswordScreen = testenNavigateToPasswordScreen,
         navigateToSettingScreen = navigateToSettingScreen,
         navigateToPictureDogScreen = navigateToPictureDogScreen,
         navigateToOverviewDogScreen = navigateToOverviewDogScreen,
-        navigateToAddDogToAnAppointment = navigateToAddDogToAnAppointment,
-        uitloggen = {
-            /* Delete the email address from the DataStore in the entry screen of the application,
-        so the user can always fill in an email address. */
-            viewModel.deleteEmailAddressAndUserRoleInDataStore()
-            uitloggen()
-        }
+        navigateToAddDogToAnAppointment = navigateToAddDogToAnAppointment
     )
 }
 
@@ -61,12 +52,10 @@ fun HomeScreenOwner(
 fun HomeScreenOwnerBody(
     getEmailaddressFromDataStore: HomeScreenUiState,
     getUserRoleFromDataStore: HomeScreenUiState,
-    testenNavigateToPasswordScreen: () -> Unit,
     navigateToSettingScreen: () -> Unit,
     navigateToPictureDogScreen: () -> Unit,
     navigateToOverviewDogScreen: () -> Unit,
     navigateToAddDogToAnAppointment: () -> Unit,
-    uitloggen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -78,7 +67,7 @@ fun HomeScreenOwnerBody(
         )
 
         Text(
-            text = "E-mailadres: ${getEmailaddressFromDataStore.emailAddress} User Rol: ${getUserRoleFromDataStore.userRole}"
+            text = "E-mailadres: ${getEmailaddressFromDataStore.emailAddress}\nUser Rol: ${getUserRoleFromDataStore.userRole}"
         )
 
         Button(
@@ -108,19 +97,21 @@ fun HomeScreenOwnerBody(
         ) {
             Text(text = "Honden aan afspraak toevoegen")
         }
+    }
+}
 
-        Button(
-            onClick = testenNavigateToPasswordScreen,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Wachtwoord wijzigen")
-        }
+@Preview
+@Composable
+fun HomeScreenOwnerPreview() {
+    DogWalkingServiceTheme {
+        HomeScreenOwnerBody(
+            getEmailaddressFromDataStore = HomeScreenUiState("eigenaar@gmail.com", ""),
+            getUserRoleFromDataStore = HomeScreenUiState("", "Eigenaar"),
+            navigateToSettingScreen = {},
+            navigateToPictureDogScreen = {},
+            navigateToOverviewDogScreen = {},
+            navigateToAddDogToAnAppointment = {}
 
-        Button(
-            onClick = uitloggen,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Uitloggen")
-        }
+        )
     }
 }

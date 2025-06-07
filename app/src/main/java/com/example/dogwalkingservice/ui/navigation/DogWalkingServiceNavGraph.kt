@@ -17,6 +17,8 @@ import com.example.dogwalkingservice.ui.registration.RegistrationDestination
 import com.example.dogwalkingservice.ui.registration.RegistrationScreen
 import com.example.dogwalkingservice.ui.settings.EditPersonalDataDestination
 import com.example.dogwalkingservice.ui.settings.EditPersonalDataScreen
+import com.example.dogwalkingservice.ui.settings.SettingsOverviewDestination
+import com.example.dogwalkingservice.ui.settings.SettingsOverviewScreen
 
 @Composable
 fun DogWalkingServiceNavGraph(
@@ -57,13 +59,8 @@ fun DogWalkingServiceNavGraph(
         // Homepage owner.
         composable(route = HomeScreenOwnerDestination.route) {
             HomeScreenOwner(
-                testenNavigateToPasswordScreen = {
-                    navController.navigate(PasswordDestination.route)
-                },
                 navigateToSettingScreen = {
-                    navController.popBackStack()
-
-                    navController.navigate(EditPersonalDataDestination.route)
+                    navController.navigate(SettingsOverviewDestination.route)
                 },
                 navigateToPictureDogScreen = {
 
@@ -73,14 +70,6 @@ fun DogWalkingServiceNavGraph(
                 },
                 navigateToAddDogToAnAppointment = {
 
-                },
-                uitloggen = {
-                    /* Remove the current page, HomeScreenOwnerDestination, from the BackStack,
-                       so when you will close the app, you won't go to the previous screen and see the homepage of the owner again.   */
-                    navController.popBackStack()
-
-                    // Open the LoginScreen where the user can login again.
-                    navController.navigate(LoginDestination.route)
                 }
             )
         }
@@ -88,21 +77,11 @@ fun DogWalkingServiceNavGraph(
         // Homepage dog sitter.
         composable(route = HomeScreenDogSitterDestination.route) {
             HomeScreenDogSitter(
-                testenNavigateToPasswordScreen = {
-                    navController.navigate(PasswordDestination.route)
-                },
                 navigateToSettingScreen = {
-                    navController.popBackStack()
-
-                    navController.navigate(EditPersonalDataDestination.route)
+                    navController.navigate(SettingsOverviewDestination.route)
                 },
-                uitloggen = {
-                    /* Remove the current page, HomeScreenOwnerDestination, from the BackStack,
-                       so when you will close the app, you won't go to the previous screen and see the homepage of the owner again.   */
-                    navController.popBackStack()
+                navigateToAppointmentScreen = {
 
-                    // Open the LoginScreen where the user can login again.
-                    navController.navigate(LoginDestination.route)
                 }
             )
         }
@@ -130,6 +109,25 @@ fun DogWalkingServiceNavGraph(
                     navController.popBackStack()
 
                     navController.navigate(HomeScreenDogSitterDestination.route)
+                }
+            )
+        }
+
+        // Settings overview screen.
+        composable(route = SettingsOverviewDestination.route) {
+            SettingsOverviewScreen(
+                navigateToEditPersonalData = {
+
+                },
+                navigateToEditPassword = {
+                    navController.navigate(PasswordDestination.route)
+                },
+                logOut = {
+                    // Open the LoginScreen where the user can login again.
+                    navController.navigate(LoginDestination.route) {
+                        // Remove all previous screens, so the user has to sign in to use the application.
+                        popUpTo(0)
+                    }
                 }
             )
         }

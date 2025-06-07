@@ -36,5 +36,10 @@
     <string name="password_screen_repeat_new_password">Herhaal wachtwoord:</string>
     <string name="password_screen_edit_password">Wijzigen</string>
 
+    <string name="setting_overview_title">Instellingen</string>
+    <string name="setting_overview_personal_data">Persoonlijke gegevens</string>
+    <string name="setting_overview_edit_password">Wachtwoord wijzigen</string>
+    <string name="setting_overview_logout">Uitloggen</string>
+
     <string name="edit_personal_data_title">Persoonlijke informatie</string>
 </resources>

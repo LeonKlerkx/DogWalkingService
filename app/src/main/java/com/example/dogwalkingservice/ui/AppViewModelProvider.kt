@@ -10,6 +10,7 @@ import com.example.dogwalkingservice.ui.home.HomeScreenOwnerViewModel
 import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.password.PasswordViewModel
 import com.example.dogwalkingservice.ui.registration.RegistrationViewModel
+import com.example.dogwalkingservice.ui.settings.SettingsOverviewViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire Inventory app
@@ -40,6 +41,12 @@ object AppViewModelProvider {
         // Initializer for HomeScreenOwnwerViewModel.
         initializer {
             HomeScreenOwnerViewModel(
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
+            )
+        }
+        // Initializer for SettingsOverviewViewModel.
+        initializer {
+            SettingsOverviewViewModel(
                 userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }
