@@ -35,4 +35,6 @@
     <string name="password_screen_new_password">Wachtwoord:</string>
     <string name="password_screen_repeat_new_password">Herhaal wachtwoord:</string>
     <string name="password_screen_edit_password">Wijzigen</string>
+
+    <string name="edit_personal_data_title">Persoonlijke informatie</string>
 </resources>

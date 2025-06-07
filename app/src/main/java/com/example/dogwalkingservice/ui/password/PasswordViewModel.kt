@@ -53,7 +53,7 @@ class PasswordViewModel(
      */
     fun deleteEmailAddressInDataStore() {
         viewModelScope.launch {
-            userPreferencesRepository.deleteEmailaddress()
+            userPreferencesRepository.deleteEmailaddressAndUserRole()
         }
     }
 

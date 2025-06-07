@@ -1,5 +1,6 @@
 package com.example.dogwalkingservice.ui.login
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogwalkingservice.data.GebruikersRepository
 import com.example.dogwalkingservice.data.UserPreferencesRepository
+import com.example.dogwalkingservice.ui.home.HomeScreenUiState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -34,11 +36,30 @@ class LoginViewModel(
     }
 
     /**
-     * Delete the email address from the DataStore.
+     * Save the [userRole] into the DataStore.
      */
-    fun deleteEmailAddressInDataStore() {
+    fun saveUserRoleInDataStore(userRole: String) {
         viewModelScope.launch {
-            userPreferencesRepository.deleteEmailaddress()
+            userPreferencesRepository.saveUserRole(userRole)
+        }
+    }
+
+    /**
+     * Read the Email address and the user role from the DataStore.
+     */
+    suspend fun readDataInDataStore(): HomeScreenUiState {
+        return HomeScreenUiState(
+            emailAddress = userPreferencesRepository.getEmailAddress.first(),
+            userRole = userPreferencesRepository.getUserRole.first()
+        )
+    }
+
+    /**
+     * Delete the email address and the user role from the DataStore.
+     */
+    fun deleteEmailAddressAndUserRoleInDataStore() {
+        viewModelScope.launch {
+            userPreferencesRepository.deleteEmailaddressAndUserRole()
         }
     }
 
@@ -48,7 +69,8 @@ class LoginViewModel(
     fun updateEmailaddress(emailAddress: String) {
         loginUiState = LoginUiState(
             emailAddress = emailAddress,
-            password = loginUiState.password // Holds the current password.
+            password = loginUiState.password, // Holds the current password.
+            userRole = loginUiState.userRole
         )
     }
 
@@ -58,7 +80,19 @@ class LoginViewModel(
     fun updatePassword(password: String) {
         loginUiState = LoginUiState(
             emailAddress = loginUiState.emailAddress, // Holds the current email address.
-            password = password
+            password = password,
+            userRole = loginUiState.userRole
+        )
+    }
+
+    /**
+     * Update the [LoginUiState] with the new value of [LoginUiState.userRole].
+     */
+    fun updateUserRole(userRole: String) {
+        loginUiState = LoginUiState(
+            emailAddress = loginUiState.emailAddress,
+            password = loginUiState.password,
+            userRole = userRole
         )
     }
 
@@ -85,6 +119,10 @@ class LoginViewModel(
                het e-mailadres en het wachtwoord in de Database bestaat. */
             if (checkUserCredentials?.emailadres.equals(loginUiState.emailAddress) &&
                 checkUserCredentials?.wachtwoord.equals(loginUiState.password)) {
+
+                // Give the user role to the ui state.
+                updateUserRole(checkUserCredentials!!.rolnaam)
+
                 // Object is niet NULL. Het object teruggeven (met !! (= niet nullable objecten))
                 return checkUserCredentials!!.rolnaam
             }
@@ -101,5 +139,6 @@ class LoginViewModel(
  */
 data class LoginUiState(
     val emailAddress: String = "",
-    val password: String = ""
+    val password: String = "",
+    val userRole: String = ""
 )

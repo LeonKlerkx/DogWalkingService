@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.dogwalkingservice.DogWalkingServiceApplication
+import com.example.dogwalkingservice.ui.home.HomeScreenOwnerViewModel
 import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.password.PasswordViewModel
 import com.example.dogwalkingservice.ui.registration.RegistrationViewModel
@@ -33,6 +34,12 @@ object AppViewModelProvider {
         initializer {
             RegistrationViewModel(
                 gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for HomeScreenOwnwerViewModel.
+        initializer {
+            HomeScreenOwnerViewModel(
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }
     }

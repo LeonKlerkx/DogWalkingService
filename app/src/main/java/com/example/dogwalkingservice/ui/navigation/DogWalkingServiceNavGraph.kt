@@ -15,6 +15,8 @@ import com.example.dogwalkingservice.ui.password.PasswordDestination
 import com.example.dogwalkingservice.ui.password.PasswordScreen
 import com.example.dogwalkingservice.ui.registration.RegistrationDestination
 import com.example.dogwalkingservice.ui.registration.RegistrationScreen
+import com.example.dogwalkingservice.ui.settings.EditPersonalDataDestination
+import com.example.dogwalkingservice.ui.settings.EditPersonalDataScreen
 
 @Composable
 fun DogWalkingServiceNavGraph(
@@ -58,6 +60,20 @@ fun DogWalkingServiceNavGraph(
                 testenNavigateToPasswordScreen = {
                     navController.navigate(PasswordDestination.route)
                 },
+                navigateToSettingScreen = {
+                    navController.popBackStack()
+
+                    navController.navigate(EditPersonalDataDestination.route)
+                },
+                navigateToPictureDogScreen = {
+
+                },
+                navigateToOverviewDogScreen = {
+
+                },
+                navigateToAddDogToAnAppointment = {
+
+                },
                 uitloggen = {
                     /* Remove the current page, HomeScreenOwnerDestination, from the BackStack,
                        so when you will close the app, you won't go to the previous screen and see the homepage of the owner again.   */
@@ -72,7 +88,22 @@ fun DogWalkingServiceNavGraph(
         // Homepage dog sitter.
         composable(route = HomeScreenDogSitterDestination.route) {
             HomeScreenDogSitter(
+                testenNavigateToPasswordScreen = {
+                    navController.navigate(PasswordDestination.route)
+                },
+                navigateToSettingScreen = {
+                    navController.popBackStack()
 
+                    navController.navigate(EditPersonalDataDestination.route)
+                },
+                uitloggen = {
+                    /* Remove the current page, HomeScreenOwnerDestination, from the BackStack,
+                       so when you will close the app, you won't go to the previous screen and see the homepage of the owner again.   */
+                    navController.popBackStack()
+
+                    // Open the LoginScreen where the user can login again.
+                    navController.navigate(LoginDestination.route)
+                }
             )
         }
 
@@ -101,6 +132,11 @@ fun DogWalkingServiceNavGraph(
                     navController.navigate(HomeScreenDogSitterDestination.route)
                 }
             )
+        }
+
+        // Edit personal data screen
+        composable(route = EditPersonalDataDestination.route) {
+            EditPersonalDataScreen()
         }
     }
 }

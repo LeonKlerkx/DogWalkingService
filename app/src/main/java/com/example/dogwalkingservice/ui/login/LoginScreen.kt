@@ -1,5 +1,6 @@
 package com.example.dogwalkingservice.ui.login
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,20 +21,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
 import com.example.dogwalkingservice.ui.theme.DogWalkingServiceTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object LoginDestination : NavigationDestination {
     override val route = "login"
     override val titleRes = R.string.login_title
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LoginScreen(
     navigateToStartPageOwner: () -> Unit,
@@ -50,7 +53,31 @@ fun LoginScreen(
 
     /* Delete the email address from the DataStore in the entry screen of the application,
         so the user can always fill in an email address. */
-    viewModel.deleteEmailAddressInDataStore()
+    //viewModel.deleteEmailAddressAndUserRoleInDataStore()
+
+
+    // You can only call the withContext coroutine in another coroutineScope,
+    // otherwise you get an error.
+    coroutineScope.launch(Dispatchers.Main) {
+
+        // Execute the coroutineScope on the Main Thread. De coroutine launch by default on the Default Dispatchers.
+        withContext(Dispatchers.Main) {
+
+            // Use a coroutineScope because the method readDataInDataStore is a suspending method.
+            coroutineScope.launch {
+
+                // Read the Email address and the user role from the DataStore.
+                val readUserRole = viewModel.readDataInDataStore()
+
+                if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Eigenaar")) {
+                    navigateToStartPageOwner()
+                }
+                else if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Oppasser")) {
+                    navigateToStartPageDogSitter()
+                }
+            }
+        }
+    }
 
     LoginBody(
         emailaddress = viewModel.loginUiState.emailAddress,
@@ -68,6 +95,9 @@ fun LoginScreen(
                     // Save the email address from the user in the DataStore.
                     viewModel.saveEmailAddressInDataStore(viewModel.loginUiState.emailAddress)
 
+                    // Save the user role from the user in the DataStore.
+                    viewModel.saveUserRoleInDataStore(viewModel.loginUiState.userRole)
+
                     // When the user does exists in the Database and has the role Owner,
                     // send the user to the homepage of the Owner.
                     when (getUser) {
@@ -75,8 +105,7 @@ fun LoginScreen(
                         "Oppasser" -> navigateToStartPageDogSitter()
                     }
 
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
             }
