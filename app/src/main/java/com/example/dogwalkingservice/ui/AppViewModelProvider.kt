@@ -33,7 +33,8 @@ object AppViewModelProvider {
         // Initializer for RegistrationViewModel.
         initializer {
             RegistrationViewModel(
-                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }
         // Initializer for HomeScreenOwnwerViewModel.

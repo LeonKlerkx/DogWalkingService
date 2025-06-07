@@ -4,12 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dogwalkingservice.data.Gebruiker
 import com.example.dogwalkingservice.data.GebruikersRepository
+import com.example.dogwalkingservice.data.UserPreferencesRepository
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class RegistrationViewModel(
-    private val gebruikersRepository: GebruikersRepository
+    private val gebruikersRepository: GebruikersRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     /**
@@ -225,6 +229,24 @@ class RegistrationViewModel(
             placeOfResidence = registrationUiState.placeOfResidence,
             personalDescription = personalDescription
         )
+    }
+
+    /**
+     * Save the email address into the DataStore.
+     */
+    fun saveEmailAddressInDataStore(emailAddress: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.saveEmailAddress(emailAddress)
+        }
+    }
+
+    /**
+     * Save the [userRole] into the DataStore.
+     */
+    fun saveUserRoleInDataStore(userRole: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.saveUserRole(userRole)
+        }
     }
 
     /**

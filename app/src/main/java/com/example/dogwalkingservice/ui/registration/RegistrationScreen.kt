@@ -81,6 +81,12 @@ fun RegistrationScreen(
                 try {
                     val giveTheUserRoleInfo = viewModel.addUserIntoTheDatabase()
 
+                    // Save the email address from the user in the DataStore.
+                    viewModel.saveEmailAddressInDataStore(viewModel.registrationUiState.emailAddress)
+
+                    // Save the user role from the user in the DataStore.
+                    viewModel.saveUserRoleInDataStore(viewModel.registrationUiState.userRole)
+
                     when (giveTheUserRoleInfo) {
                         "Eigenaar" -> navigateToStartPageOwner()
                         "Oppasser" -> navigateToStartPageDogSitter()
