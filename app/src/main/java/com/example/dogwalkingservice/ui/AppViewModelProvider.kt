@@ -10,6 +10,7 @@ import com.example.dogwalkingservice.ui.home.HomeScreenOwnerViewModel
 import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.password.PasswordViewModel
 import com.example.dogwalkingservice.ui.registration.RegistrationViewModel
+import com.example.dogwalkingservice.ui.settings.EditPersonalDataViewModel
 import com.example.dogwalkingservice.ui.settings.SettingsOverviewViewModel
 
 /**
@@ -47,6 +48,13 @@ object AppViewModelProvider {
         // Initializer for SettingsOverviewViewModel.
         initializer {
             SettingsOverviewViewModel(
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
+            )
+        }
+        // Initializer for EditPersonalDataViewModel.
+        initializer {
+            EditPersonalDataViewModel(
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
                 userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
             )
         }

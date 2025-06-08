@@ -117,7 +117,7 @@ fun DogWalkingServiceNavGraph(
         composable(route = SettingsOverviewDestination.route) {
             SettingsOverviewScreen(
                 navigateToEditPersonalData = {
-
+                    navController.navigate(EditPersonalDataDestination.route)
                 },
                 navigateToEditPassword = {
                     navController.navigate(PasswordDestination.route)
@@ -132,7 +132,7 @@ fun DogWalkingServiceNavGraph(
             )
         }
 
-        // Edit personal data screen
+        // Edit Personal data screen.
         composable(route = EditPersonalDataDestination.route) {
             EditPersonalDataScreen()
         }

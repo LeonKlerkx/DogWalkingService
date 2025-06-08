@@ -42,4 +42,14 @@
     <string name="setting_overview_logout">Uitloggen</string>
 
     <string name="edit_personal_data_title">Persoonlijke informatie</string>
+    <string name="edit_personal_data_person_name">Naam:</string>
+    <string name="edit_personal_data_email_address">E-mailadres:</string>
+    <string name="edit_personal_data_phone_number">Telefoonnummer:</string>
+    <string name="edit_personal_data_date_of_birth">Geboortedatum:</string>
+    <string name="edit_personal_data_placeholder_date_of_birth">yyyy-MM-dd</string>
+    <string name="edit_personal_data_address">Adres:</string>
+    <string name="edit_personal_data_postal_code">Postcode:</string>
+    <string name="edit_personal_data_place_of_residence">Woonplaats:</string>
+    <string name="edit_personal_data_personal_description">Omschrijving:</string>
+    <string name="edit_personal_data_button_save">Opslaan</string>
 </resources>
