@@ -149,6 +149,10 @@ fun RegistrationBody(
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 modifier = modifier.fillMaxWidth(),
                 enabled = true,
                 singleLine = true
@@ -167,6 +171,10 @@ fun RegistrationBody(
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
                 ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = modifier.fillMaxWidth(),
                 enabled = true,
@@ -184,6 +192,10 @@ fun RegistrationBody(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
                 ),
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = modifier.fillMaxWidth(),
@@ -241,6 +253,10 @@ fun RegistrationBody(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
                 ),
                 modifier = modifier.fillMaxWidth(),
                 enabled = true,
@@ -309,6 +325,10 @@ fun RegistrationBody(
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
                 modifier = modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -326,6 +346,10 @@ fun RegistrationBody(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
                 ),
                 modifier = modifier.fillMaxWidth(),
                 singleLine = true
@@ -345,6 +369,10 @@ fun RegistrationBody(
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = if (selectedValueRole == "Oppasser") ImeAction.Next else ImeAction.Done
+                ),
                 modifier = modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -363,6 +391,10 @@ fun RegistrationBody(
                         focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                         unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                         disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
                     ),
                     modifier = modifier.fillMaxWidth(),
                     singleLine = true
