@@ -199,6 +199,10 @@ class EditPersonalDataViewModel(
                 wachtwoord = getUserObjectByUserName!!.wachtwoord
             ))
 
+            /* Update the email address in the DataStore so the email address is always up-to-date,
+               and there won't occurs exception. */
+            userPreferencesRepository.saveEmailAddress(editPersonalDataUiState.emailAddress)
+
             return "De gegevens zijn succesvol bijgewerkt."
 
         } else {
