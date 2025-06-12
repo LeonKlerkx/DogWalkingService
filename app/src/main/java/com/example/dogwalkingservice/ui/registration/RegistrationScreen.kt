@@ -1,19 +1,26 @@
 package com.example.dogwalkingservice.ui.registration
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,7 +37,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
@@ -42,68 +51,80 @@ object RegistrationDestination : NavigationDestination {
     override val titleRes = R.string.registration_title
 }
 
+@OptIn(ExperimentalMaterial3Api::class) // Needs for DogWalkingServiceTopAppBar.
 @Composable
 fun RegistrationScreen(
+    navigateBack: () -> Unit,
     navigateToStartPageOwner: () -> Unit,
     navigateToStartPageDogSitter: () -> Unit,
     modifier: Modifier = Modifier,
     // Open the RegistrationViewModel in the AppViewModelProvider.Factory
     viewModel: RegistrationViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    Scaffold(
+        topBar = {
+            DogWalkingServiceTopAppBar(
+                title = stringResource(RegistrationDestination.titleRes), // Show the title of the topBar banner.
+                canNavigateBack = true, // Show the icon in the top left corner and make it works.
+                navigateUp = navigateBack // Navigate to previous screen.
+            )
+        }
+    ) { paddingValues ->
+        val coroutineScope = rememberCoroutineScope()
 
-    val context = LocalContext.current
+        val context = LocalContext.current
 
-    RegistrationBody(
-        emailAddress = viewModel.registrationUiState.emailAddress,
-        onChangeEmailAddress = viewModel::updateEmailaddress,
-        password = viewModel.registrationUiState.password,
-        onChangePassword = viewModel::updatePassword,
-        repeatPassword = viewModel.registrationUiState.repeatPassword,
-        onChangeRepeatPassword = viewModel::updateRepeatPassword,
-        onSelectedChangeRole = viewModel::updateUserRole,
-        personName = viewModel.registrationUiState.userName,
-        onChangePersonName = viewModel::updateUserName,
-        phoneNumber = viewModel.registrationUiState.phoneNumber,
-        onChangePhoneNumber = viewModel::updatePhoneNumber,
-        dateOfBirth = viewModel.registrationUiState.dateOfBirth,
-        onChangeDateOfBirth = viewModel::updateDateOfBirth,
-        address = viewModel.registrationUiState.address,
-        onChangeAddress = viewModel::updateAddress,
-        postalCode = viewModel.registrationUiState.postalCode,
-        onChangePostalCode = viewModel::updatePostalCode,
-        placeOfResidence = viewModel.registrationUiState.placeOfResidence,
-        onChangePlaceOfResidence = viewModel::updatePlaceOfResidence,
-        personalDescription = viewModel.registrationUiState.personalDescription,
-        onChangePersonalDescription = viewModel::updatePersonalDescription,
-        registerUser = {
-            coroutineScope.launch {
-                try {
-                    val giveTheUserRoleInfo = viewModel.addUserIntoTheDatabase()
+        RegistrationBody(
+            paddingValues = paddingValues, // Needs for correct place the content body of the screen.
+            emailAddress = viewModel.registrationUiState.emailAddress,
+            onChangeEmailAddress = viewModel::updateEmailaddress,
+            password = viewModel.registrationUiState.password,
+            onChangePassword = viewModel::updatePassword,
+            repeatPassword = viewModel.registrationUiState.repeatPassword,
+            onChangeRepeatPassword = viewModel::updateRepeatPassword,
+            onSelectedChangeRole = viewModel::updateUserRole,
+            personName = viewModel.registrationUiState.userName,
+            onChangePersonName = viewModel::updateUserName,
+            phoneNumber = viewModel.registrationUiState.phoneNumber,
+            onChangePhoneNumber = viewModel::updatePhoneNumber,
+            dateOfBirth = viewModel.registrationUiState.dateOfBirth,
+            onChangeDateOfBirth = viewModel::updateDateOfBirth,
+            address = viewModel.registrationUiState.address,
+            onChangeAddress = viewModel::updateAddress,
+            postalCode = viewModel.registrationUiState.postalCode,
+            onChangePostalCode = viewModel::updatePostalCode,
+            placeOfResidence = viewModel.registrationUiState.placeOfResidence,
+            onChangePlaceOfResidence = viewModel::updatePlaceOfResidence,
+            personalDescription = viewModel.registrationUiState.personalDescription,
+            onChangePersonalDescription = viewModel::updatePersonalDescription,
+            registerUser = {
+                coroutineScope.launch {
+                    try {
+                        val giveTheUserRoleInfo = viewModel.addUserIntoTheDatabase()
 
-                    // Save the email address from the user in the DataStore.
-                    viewModel.saveEmailAddressInDataStore(viewModel.registrationUiState.emailAddress)
+                        // Save the email address from the user in the DataStore.
+                        viewModel.saveEmailAddressInDataStore(viewModel.registrationUiState.emailAddress)
 
-                    // Save the user role from the user in the DataStore.
-                    viewModel.saveUserRoleInDataStore(viewModel.registrationUiState.userRole)
+                        // Save the user role from the user in the DataStore.
+                        viewModel.saveUserRoleInDataStore(viewModel.registrationUiState.userRole)
 
-                    when (giveTheUserRoleInfo) {
-                        "Eigenaar" -> navigateToStartPageOwner()
-                        "Oppasser" -> navigateToStartPageDogSitter()
+                        when (giveTheUserRoleInfo) {
+                            "Eigenaar" -> navigateToStartPageOwner()
+                            "Oppasser" -> navigateToStartPageDogSitter()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
-                catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                }
-             //   navigationToAdditionalUserInformation()
-            }
-        },
-        modifier = modifier
-    )
+            },
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
 fun RegistrationBody(
+    paddingValues: PaddingValues,
     emailAddress: String,
     onChangeEmailAddress: (String) -> Unit,
     password: String,
@@ -134,7 +155,8 @@ fun RegistrationBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .padding(dimensionResource(R.dimen.padding_medium))
+            .padding(paddingValues)
+            .fillMaxSize()
     ) {
         item {
             // TextField Email address.
@@ -427,6 +449,7 @@ fun RegistrationBody(
 fun PreviewRegistrationScreen() {
     DogWalkingServiceTheme {
         RegistrationBody(
+            paddingValues = PaddingValues(0.dp),
             emailAddress = "test@gmail.com",
             onChangeEmailAddress = {},
             password = "ab1cd2",

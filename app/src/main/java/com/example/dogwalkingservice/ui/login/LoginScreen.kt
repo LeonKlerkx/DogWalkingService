@@ -4,14 +4,20 @@ import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,7 +31,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
@@ -39,6 +47,7 @@ object LoginDestination : NavigationDestination {
     override val titleRes = R.string.login_title
 }
 
+@OptIn(ExperimentalMaterial3Api::class) // Needs for DogWalkingServiceTopAppBar.
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LoginScreen(
@@ -50,75 +59,86 @@ fun LoginScreen(
     // Open the LoginViewModel in the AppViewModelProvider.Factory.
     viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    Scaffold(
+        topBar = {
+            DogWalkingServiceTopAppBar(
+                title = stringResource(LoginDestination.titleRes),
+                canNavigateBack = false,
+            )
+        }
+    ) { paddingValues ->
 
-    val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
 
-    /* Delete the email address from the DataStore in the entry screen of the application,
+        val context = LocalContext.current
+
+        /* Delete the email address from the DataStore in the entry screen of the application,
         so the user can always fill in an email address. */
-    //viewModel.deleteEmailAddressAndUserRoleInDataStore()
+        //viewModel.deleteEmailAddressAndUserRoleInDataStore()
 
 
-    // You can only call the withContext coroutine in another coroutineScope,
-    // otherwise you get an error.
-    coroutineScope.launch(Dispatchers.Main) {
+        // You can only call the withContext coroutine in another coroutineScope,
+        // otherwise you get an error.
+        coroutineScope.launch(Dispatchers.Main) {
 
-        // Execute the coroutineScope on the Main Thread. De coroutine launch by default on the Default Dispatchers.
-        withContext(Dispatchers.Main) {
+            // Execute the coroutineScope on the Main Thread. De coroutine launch by default on the Default Dispatchers.
+            withContext(Dispatchers.Main) {
 
-            // Use a coroutineScope because the method readDataInDataStore is a suspending method.
-            coroutineScope.launch {
+                // Use a coroutineScope because the method readDataInDataStore is a suspending method.
+                coroutineScope.launch {
 
-                // Read the Email address and the user role from the DataStore.
-                val readUserRole = viewModel.readDataInDataStore()
+                    // Read the Email address and the user role from the DataStore.
+                    val readUserRole = viewModel.readDataInDataStore()
 
-                if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Eigenaar")) {
-                    navigateToStartPageOwner()
-                }
-                else if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Oppasser")) {
-                    navigateToStartPageDogSitter()
+                    if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Eigenaar")) {
+                        navigateToStartPageOwner()
+                    } else if (readUserRole.userRole.isNotEmpty() && readUserRole.userRole.equals("Oppasser")) {
+                        navigateToStartPageDogSitter()
+                    }
                 }
             }
         }
-    }
 
-    LoginBody(
-        emailaddress = viewModel.loginUiState.emailAddress,
-        onChangeEmailAddress = viewModel::updateEmailaddress,
-        password = viewModel.loginUiState.password,
-        onChangePassword = viewModel::updatePassword,
-        navigateToForgetPassword = navigateToForgetPassword,
-        navigateToRegisterUser = navigateToRegisterUser,
-        loginClick = {
-            coroutineScope.launch {
-                try {
-                    // Get the object of the sign in user.
-                    val getUser = viewModel.checkLoginCredentials()
+        LoginBody(
+            paddingValues = paddingValues,
+            emailaddress = viewModel.loginUiState.emailAddress,
+            onChangeEmailAddress = viewModel::updateEmailaddress,
+            password = viewModel.loginUiState.password,
+            onChangePassword = viewModel::updatePassword,
+            navigateToForgetPassword = navigateToForgetPassword,
+            navigateToRegisterUser = navigateToRegisterUser,
+            loginClick = {
+                coroutineScope.launch {
+                    try {
+                        // Get the object of the sign in user.
+                        val getUser = viewModel.checkLoginCredentials()
 
-                    // Save the email address from the user in the DataStore.
-                    viewModel.saveEmailAddressInDataStore(viewModel.loginUiState.emailAddress)
+                        // Save the email address from the user in the DataStore.
+                        viewModel.saveEmailAddressInDataStore(viewModel.loginUiState.emailAddress)
 
-                    // Save the user role from the user in the DataStore.
-                    viewModel.saveUserRoleInDataStore(viewModel.loginUiState.userRole)
+                        // Save the user role from the user in the DataStore.
+                        viewModel.saveUserRoleInDataStore(viewModel.loginUiState.userRole)
 
-                    // When the user does exists in the Database and has the role Owner,
-                    // send the user to the homepage of the Owner.
-                    when (getUser) {
-                        "Eigenaar" -> navigateToStartPageOwner()
-                        "Oppasser" -> navigateToStartPageDogSitter()
+                        // When the user does exists in the Database and has the role Owner,
+                        // send the user to the homepage of the Owner.
+                        when (getUser) {
+                            "Eigenaar" -> navigateToStartPageOwner()
+                            "Oppasser" -> navigateToStartPageDogSitter()
+                        }
+
+                    } catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                     }
-
-                } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
                 }
-            }
-        },
-        modifier = modifier
-    )
+            },
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
 fun LoginBody(
+    paddingValues: PaddingValues,
     emailaddress: String,
     onChangeEmailAddress: (String) -> Unit,
     password: String,
@@ -132,7 +152,9 @@ fun LoginBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .padding(dimensionResource(R.dimen.padding_medium))
+            .padding(paddingValues)
+            .fillMaxSize() // Make sure to fill the Login screen the whole screen.
+            .verticalScroll(rememberScrollState()) // The user can scroll the screen.
     ) {
 
         // TextField E-mailadres.
@@ -211,6 +233,7 @@ fun LoginBody(
 fun LoginScreenPreview() {
     DogWalkingServiceTheme {
         LoginBody(
+            paddingValues = PaddingValues(0.dp),
             emailaddress = "test@gmail.com",
             onChangeEmailAddress = {},
             password = "ab1cd2",

@@ -1,16 +1,23 @@
 package com.example.dogwalkingservice.ui.password
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,7 +32,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
@@ -37,56 +46,70 @@ object PasswordDestination : NavigationDestination {
     override val titleRes = R.string.password_screen
 }
 
+@OptIn(ExperimentalMaterial3Api::class) // Needs for DogWalkingServiceTopAppBar.
 @Composable
 fun PasswordScreen(
-    navigateToLoginUser: () -> Unit,
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     // Open the PasswordViewModel in the AppViewModelProvider.Factory.
     viewModel: PasswordViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
-    val context = LocalContext.current
-
-    val getDataStoreEmailaddress by viewModel.uiStateDataStoreEmailAddress.collectAsState()
-
-    PasswordBody(
-        dataStoreEmailAddress = getDataStoreEmailaddress.emailaddress,
-        emailAddress = viewModel.passwordUiState.emailaddress,
-        onChangeEmailAddress = viewModel::updateEmailAddress,
-        password = viewModel.passwordUiState.password,
-        onChangePassword = viewModel::updatePassword,
-        repeatPassword = viewModel.passwordUiState.repeatPassword,
-        onChangeRepeatPassword = viewModel::updateRepeatPassword,
-        changePassword = {
-            coroutineScope.launch {
-                try {
-                    /* Only if the user is signed in and he wants to change the password,
-                       the email address will be added in the passwordUiState of the viewModel.  */
-                    if (viewModel.passwordUiState.emailaddress.isEmpty())
-                        viewModel.updateEmailAddressWithTheDataStoreEmailAddress(getDataStoreEmailaddress.emailaddress)
-
-                    val resultOfUpdatingPassword = viewModel
-                        .checkEmailAddressExistsToUpdatePassword()
-
-                    // Save the email address from the user in the DataStore.
-                    viewModel.saveEmailAddressInDataStore(viewModel.passwordUiState.emailaddress)
-
-                    Toast.makeText(context, resultOfUpdatingPassword, Toast.LENGTH_LONG).show()
-                }
-                catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                }
-            }
-        },
-        removeEmailaddressFromDatastore = {
-            viewModel.deleteEmailAddressInDataStore()
+    Scaffold(
+        topBar = {
+            DogWalkingServiceTopAppBar(
+                title = stringResource(PasswordDestination.titleRes),
+                canNavigateBack = true, // Show the icon in the top left corner and make it works.
+                navigateUp = navigateBack // Navigate to previous screen.
+            )
         }
-    )
+    ) { paddingValues ->
+        val coroutineScope = rememberCoroutineScope()
+
+        val context = LocalContext.current
+
+        val getDataStoreEmailaddress by viewModel.uiStateDataStoreEmailAddress.collectAsState()
+
+        PasswordBody(
+            paddingValues = paddingValues, // Needs for correct place the content body of the screen.
+            dataStoreEmailAddress = getDataStoreEmailaddress.emailaddress,
+            emailAddress = viewModel.passwordUiState.emailaddress,
+            onChangeEmailAddress = viewModel::updateEmailAddress,
+            password = viewModel.passwordUiState.password,
+            onChangePassword = viewModel::updatePassword,
+            repeatPassword = viewModel.passwordUiState.repeatPassword,
+            onChangeRepeatPassword = viewModel::updateRepeatPassword,
+            changePassword = {
+                coroutineScope.launch {
+                    try {
+                        /* Only if the user is signed in and he wants to change the password,
+                       the email address will be added in the passwordUiState of the viewModel.  */
+                        if (viewModel.passwordUiState.emailaddress.isEmpty())
+                            viewModel.updateEmailAddressWithTheDataStoreEmailAddress(
+                                getDataStoreEmailaddress.emailaddress
+                            )
+
+                        val resultOfUpdatingPassword = viewModel
+                            .checkEmailAddressExistsToUpdatePassword()
+
+                        // Save the email address from the user in the DataStore.
+                        viewModel.saveEmailAddressInDataStore(viewModel.passwordUiState.emailaddress)
+
+                        Toast.makeText(context, resultOfUpdatingPassword, Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            },
+            removeEmailaddressFromDatastore = {
+                viewModel.deleteEmailAddressInDataStore()
+            }
+        )
+    }
 }
 
 @Composable
 fun PasswordBody(
+    paddingValues: PaddingValues,
     dataStoreEmailAddress: String,
     emailAddress: String,
     onChangeEmailAddress: (String) -> Unit,
@@ -101,7 +124,9 @@ fun PasswordBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .padding(dimensionResource(R.dimen.padding_medium))
+            .padding(paddingValues)
+            .fillMaxSize() // Make sure to fill the Password screen the whole screen.
+            .verticalScroll(rememberScrollState())
     ) {
         // Text Email address:
         OutlinedTextField(
@@ -192,6 +217,7 @@ fun PasswordBody(
 fun PasswordScreenPreview() {
     DogWalkingServiceTheme {
         PasswordBody(
+            paddingValues = PaddingValues(0.dp),
             dataStoreEmailAddress = "",
             emailAddress = "test@gmail.com",
             onChangeEmailAddress = {},

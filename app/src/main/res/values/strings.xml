@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Dog Walking Service</string>
 
+    <string name="back_button">Back</string>
+
     <string name="login_title">Login</string>
     <string name="home_screen_owner">Startpagina eigenaar</string>
     <string name="home_screen_dog_sitter">Startpagina honden oppasser</string>

@@ -89,13 +89,20 @@ fun DogWalkingServiceNavGraph(
         // Password screen.
         composable(route = PasswordDestination.route) {
             PasswordScreen(
-                navigateToLoginUser = {}
+                navigateBack = {
+                    // Navigate to the previous screen of the BackStack.
+                    navController.navigateUp()
+                }
             )
         }
 
         // Register screen.
         composable(route = RegistrationDestination.route) {
             RegistrationScreen(
+                navigateBack = {
+                    // Navigate to the LoginScreen in the BackStack.
+                    navController.navigateUp()
+                },
                 navigateToStartPageOwner = {
                     /* Remove the LoginScreen from the BackStack,
                        so the login screen won't display when you go back. */
@@ -116,6 +123,10 @@ fun DogWalkingServiceNavGraph(
         // Settings overview screen.
         composable(route = SettingsOverviewDestination.route) {
             SettingsOverviewScreen(
+                navigateBack = {
+                    // Navigate to the HomeScreen<...> screen of the BackStack.
+                    navController.navigateUp()
+                },
                 navigateToEditPersonalData = {
                     navController.navigate(EditPersonalDataDestination.route)
                 },
@@ -134,7 +145,12 @@ fun DogWalkingServiceNavGraph(
 
         // Edit Personal data screen.
         composable(route = EditPersonalDataDestination.route) {
-            EditPersonalDataScreen()
+            EditPersonalDataScreen(
+                navigateBack = {
+                    // Navigate to the SettingOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

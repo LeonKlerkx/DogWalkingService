@@ -1,16 +1,21 @@
 package com.example.dogwalkingservice.ui.settings
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
 import com.example.dogwalkingservice.R
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
@@ -32,50 +38,64 @@ object EditPersonalDataDestination : NavigationDestination {
     override val titleRes = R.string.edit_personal_data_title
 }
 
+@OptIn(ExperimentalMaterial3Api::class) // Needs for DogWalkingServiceTopAppBar.
 @Composable
 fun EditPersonalDataScreen(
+    navigateBack: () -> Unit,
     // Open the EditPersonalDataViewModel in the AppViewModelProvider.Factory.
     viewModel: EditPersonalDataViewModel = viewModel(factory = AppViewModelProvider.Factory),
     modifier: Modifier = Modifier
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    Scaffold(
+        topBar = {
+            DogWalkingServiceTopAppBar(
+                title = stringResource(EditPersonalDataDestination.titleRes), // Show the title of the topBar banner.
+                canNavigateBack = true, // Show the icon in the top left corner and make it works.
+                navigateUp = navigateBack // Navigate to previous screen.
+            )
+        }
+    ) { paddingValues ->
+        val coroutineScope = rememberCoroutineScope()
 
-    val context = LocalContext.current
+        val context = LocalContext.current
 
-    EditPersonalDataBody(
-        personName = viewModel.editPersonalDataUiState.userName,
-        emailAddress = viewModel.editPersonalDataUiState.emailAddress,
-        onChangeEmailAddress = viewModel::updateEmailAddress,
-        phoneNumber = viewModel.editPersonalDataUiState.phoneNumber,
-        onChangePhoneNumber = viewModel::updatePhoneNumber,
-        dateOfBirth = viewModel.editPersonalDataUiState.dateOfBirth,
-        onChangeDateOfBirth = viewModel::updateDateOfBirth,
-        address = viewModel.editPersonalDataUiState.address,
-        onChangeAddress = viewModel::updateAddress,
-        postalCode = viewModel.editPersonalDataUiState.postalCode,
-        onChangePostalCode = viewModel::updatePostalCode,
-        placeOfResidence = viewModel.editPersonalDataUiState.placeOfResidence,
-        onChangePlaceOfResidence = viewModel::updatePlaceOfResidence,
-        userRole = viewModel.editPersonalDataUiState.userRole,
-        personalDescription = viewModel.editPersonalDataUiState.personalDescription,
-        onChangePersonalDescription = viewModel::updatePersonDescription,
-        savePersonalData = {
-            coroutineScope.launch {
-                try {
-                    val resultUpdateUser = viewModel.saveNewUserInformationIntoTheDatabase()
+        EditPersonalDataBody(
+            paddingValues = paddingValues, // Needs for correct place the content body of the screen.
+            personName = viewModel.editPersonalDataUiState.userName,
+            emailAddress = viewModel.editPersonalDataUiState.emailAddress,
+            onChangeEmailAddress = viewModel::updateEmailAddress,
+            phoneNumber = viewModel.editPersonalDataUiState.phoneNumber,
+            onChangePhoneNumber = viewModel::updatePhoneNumber,
+            dateOfBirth = viewModel.editPersonalDataUiState.dateOfBirth,
+            onChangeDateOfBirth = viewModel::updateDateOfBirth,
+            address = viewModel.editPersonalDataUiState.address,
+            onChangeAddress = viewModel::updateAddress,
+            postalCode = viewModel.editPersonalDataUiState.postalCode,
+            onChangePostalCode = viewModel::updatePostalCode,
+            placeOfResidence = viewModel.editPersonalDataUiState.placeOfResidence,
+            onChangePlaceOfResidence = viewModel::updatePlaceOfResidence,
+            userRole = viewModel.editPersonalDataUiState.userRole,
+            personalDescription = viewModel.editPersonalDataUiState.personalDescription,
+            onChangePersonalDescription = viewModel::updatePersonDescription,
+            savePersonalData = {
+                coroutineScope.launch {
+                    try {
+                        val resultUpdateUser = viewModel.saveNewUserInformationIntoTheDatabase()
 
-                    Toast.makeText(context, resultUpdateUser, Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, resultUpdateUser, Toast.LENGTH_LONG).show()
 
-                } catch (e: Exception) {
-                    Toast.makeText(context, "catch ${e.message}", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "catch ${e.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
 fun EditPersonalDataBody(
+    paddingValues: PaddingValues,
     personName: String,
     emailAddress: String,
     onChangeEmailAddress: (String) -> Unit,
@@ -99,7 +119,8 @@ fun EditPersonalDataBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .padding(dimensionResource(R.dimen.padding_medium))
+            .padding(paddingValues)
+            .fillMaxSize() // Make sure to fill the Edit Personal Data screen the whole screen.
     ) {
         // TextField Name.
         /* @Composable invocation can only call in a @Composable function,
