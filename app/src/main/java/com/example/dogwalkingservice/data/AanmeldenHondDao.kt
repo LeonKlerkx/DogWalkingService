@@ -17,4 +17,10 @@ interface AanmeldenHondDao {
      */
     @Query("SELECT * FROM AanmeldenHond WHERE afspraakId = :afspraakId")
     fun getAllSignInDogsFromAnAppointment(afspraakId: Int): Flow<List<AanmeldenHond>>
+
+    /**
+     * Haalt alle afspraken van de aangemelde hond op.
+     */
+    @Query("SELECT * FROM AanmeldenHond WHERE chipnummer = :chipnummer")
+    fun getAllAppointmentFromOneDog(chipnummer: String): Flow<List<AanmeldenHond>>
 }

@@ -8,4 +8,7 @@ class OfflineAanmeldenHondenRepository(private val aanmeldenHondDao: AanmeldenHo
 
     override fun getAllSignInDogsFromAnAppointment(afspraakId: Int) =
         aanmeldenHondDao.getAllSignInDogsFromAnAppointment(afspraakId)
+
+    override fun getAllAppointmentFromOneDog(chipnummer: String) =
+        aanmeldenHondDao.getAllAppointmentFromOneDog(chipnummer)
 }
