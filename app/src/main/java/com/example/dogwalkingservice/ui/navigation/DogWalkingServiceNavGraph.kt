@@ -3,8 +3,16 @@ package com.example.dogwalkingservice.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.dogwalkingservice.ui.dog.DogAddScreen
+import com.example.dogwalkingservice.ui.dog.DogAddScreenDestination
+import com.example.dogwalkingservice.ui.dog.DogEditScreen
+import com.example.dogwalkingservice.ui.dog.DogEditScreenDestination
+import com.example.dogwalkingservice.ui.dog.DogOverviewDestination
+import com.example.dogwalkingservice.ui.dog.DogOverviewScreen
 import com.example.dogwalkingservice.ui.home.HomeScreenDogSitter
 import com.example.dogwalkingservice.ui.home.HomeScreenDogSitterDestination
 import com.example.dogwalkingservice.ui.home.HomeScreenOwner
@@ -66,7 +74,7 @@ fun DogWalkingServiceNavGraph(
 
                 },
                 navigateToOverviewDogScreen = {
-
+                    navController.navigate(DogOverviewDestination.route)
                 },
                 navigateToAddDogToAnAppointment = {
 
@@ -148,6 +156,47 @@ fun DogWalkingServiceNavGraph(
             EditPersonalDataScreen(
                 navigateBack = {
                     // Navigate to the SettingOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Overview dog screen.
+        composable(route = DogOverviewDestination.route) {
+            DogOverviewScreen(
+                navigateToAddDog = {
+                    navController.navigate(DogAddScreenDestination.route)
+                },
+                navigateToEditDog = {
+                    navController.navigate("${DogEditScreenDestination.route}/${it}")
+                },
+                navigateBack = {
+                    // Navigate to the SettingOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Add dog screen.
+        composable(route = DogAddScreenDestination.route) {
+            DogAddScreen(
+                navigateBack = {
+                    // Navigate to the DogOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Edit dog screen.
+        composable(
+            route = DogEditScreenDestination.routeWithChipnummer,
+            arguments = listOf(navArgument(DogEditScreenDestination.chipnummer) {
+                type = NavType.StringType
+            })
+            ) {
+            DogEditScreen(
+                navigateBack = {
+                    // Navigate to the DogOverviewScreen in the BackStack.
                     navController.navigateUp()
                 }
             )

@@ -8,7 +8,7 @@ interface HondenRepository {
 
     fun getDogByPrimaryKey(chipnummer: String): Flow<Hond>
 
-    fun getAllDogsFromOwner(eigenaar: String): Flow<List<Hond?>>
+    fun getAllDogsFromOwner(eigenaar: String): Flow<List<Hond>>
 
     suspend fun updateDog(hond: Hond)
 

@@ -2,10 +2,14 @@ package com.example.dogwalkingservice.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.dogwalkingservice.DogWalkingServiceApplication
+import com.example.dogwalkingservice.ui.dog.DogAddViewModel
+import com.example.dogwalkingservice.ui.dog.DogEditViewModel
+import com.example.dogwalkingservice.ui.dog.DogOverviewViewModel
 import com.example.dogwalkingservice.ui.home.HomeScreenOwnerViewModel
 import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.password.PasswordViewModel
@@ -56,6 +60,29 @@ object AppViewModelProvider {
             EditPersonalDataViewModel(
                 gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
                 userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
+            )
+        }
+        // Intitializer for DogOverviewViewModel.
+        initializer {
+            DogOverviewViewModel(
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository,
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository
+            )
+        }
+        // Initializer for DogEditViewModel.
+        initializer {
+            DogEditViewModel(
+                savedStateHandle = this.createSavedStateHandle(),
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository
+            )
+        }
+        // Initializer for DogAddViewModel.
+        initializer {
+            DogAddViewModel(
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository,
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
             )
         }
     }

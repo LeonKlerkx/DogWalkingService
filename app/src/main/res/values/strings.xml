@@ -54,4 +54,23 @@
     <string name="edit_personal_data_place_of_residence">Woonplaats:</string>
     <string name="edit_personal_data_personal_description">Omschrijving:</string>
     <string name="edit_personal_data_button_save">Opslaan</string>
+
+    <string name="dog_overview_title">Honden overzicht</string>
+    <string name="dog_overview_dog_name">Naam: %s</string>
+    <string name="dog_overview_owner_dog">Eigenaar: %s</string>
+    <string name="dog_overview_dog_breed">Ras: %s</string>
+
+    <string name="dog_add_item_title">Hond toevoegen</string>
+    <string name="dog_edit_item_title">Hond wijzigen</string>
+    <string name="dog_chip_number">Chipnummer</string>
+    <string name="dog_name">Hondnaam</string>
+    <string name="dog_breed">Hondenras</string>
+    <string name="dog_add_save_button">Opslaan</string>
+    <string name="dog_delete_button">Verwijder hond</string>
+
+    <string name="alert_box_title">Let op</string>
+    <string name="alert_box_message">Weet je zeker dat je %s wilt verwijderen?</string>
+    <string name="alert_box_no">Nee</string>
+    <string name="alert_box_yes">Ja</string>
+
 </resources>
