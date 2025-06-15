@@ -74,7 +74,9 @@ object AppViewModelProvider {
         initializer {
             DogEditViewModel(
                 savedStateHandle = this.createSavedStateHandle(),
-                hondenRepository = dogWalkingServiceApplication().container.hondenRepository
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository,
+                afbeeldingHondenRepository = dogWalkingServiceApplication().container.afbeeldingHondenRepository,
+                aanmeldenHondenRepository = dogWalkingServiceApplication().container.aanmeldenHondenRepository
             )
         }
         // Initializer for DogAddViewModel.

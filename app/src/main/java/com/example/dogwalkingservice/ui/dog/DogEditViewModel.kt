@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dogwalkingservice.data.AanmeldenHondenRepository
+import com.example.dogwalkingservice.data.AfbeeldingHondenRepository
 import com.example.dogwalkingservice.data.Hond
 import com.example.dogwalkingservice.data.HondenRepository
 import kotlinx.coroutines.flow.filterNotNull
@@ -14,7 +16,9 @@ import kotlinx.coroutines.launch
 
 class DogEditViewModel(
     savedStateHandle: SavedStateHandle,
-    private val hondenRepository: HondenRepository
+    private val hondenRepository: HondenRepository,
+    private val afbeeldingHondenRepository: AfbeeldingHondenRepository,
+    private val aanmeldenHondenRepository: AanmeldenHondenRepository
 ) : ViewModel() {
 
     /**
@@ -99,12 +103,29 @@ class DogEditViewModel(
     /**
      * Delete the dog into the Database.
      */
-    suspend fun deleteDog() {
-        // Controleren of de hond afbeeldingen heeft.
+    suspend fun deleteDog(): String {
 
-        // Controleren of de hond is aangemeld voor een afspraak.
+        // Check if the dog is sign in for an appointment.
+        val getAllAppointmentsFromTheDog = aanmeldenHondenRepository
+            .getAllAppointmentFromOneDog(dogUiState.chipnummer)
+            .first()
 
-        // Hond verwijderen.
+        if (getAllAppointmentsFromTheDog.isNotEmpty()) {
+            throw IllegalArgumentException("Mislukt! Verwijder eerst de aanmeldingen van de hond.")
+        }
+
+        // Check if the dog has pictures.
+        val getAllPicturesFromTheDog = afbeeldingHondenRepository
+            .getDogPictureByChipnummer(dogUiState.chipnummer)
+                .first()
+
+        if (getAllPicturesFromTheDog.isNotEmpty()) {
+            throw IllegalArgumentException("Mislukt! Verwijder eerst de afbeeldingen van de hond.")
+        }
+
+        // The dog can be removed from the Database.
+        hondenRepository.deleteDog(dogUiState.toDog())
+        return "De hond is succesvol verwijderd."
     }
 }
 

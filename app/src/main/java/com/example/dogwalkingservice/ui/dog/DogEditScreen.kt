@@ -93,7 +93,18 @@ fun DogEditScreen(
                 }
             },
             deleteDogIntoTheDatabase = {
+                coroutineScope.launch {
+                    try {
+                        val result = viewModel.deleteDog()
+                        Toast.makeText(context, result, Toast.LENGTH_LONG).show()
 
+                        // Navigate to the overview of dogs.
+                        navigateBack()
+                    }
+                    catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         )
     }
