@@ -7,6 +7,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.dogwalkingservice.ui.appointment.AppointmentAddDestination
+import com.example.dogwalkingservice.ui.appointment.AppointmentAddScreen
+import com.example.dogwalkingservice.ui.appointment.AppointmentDetailsDestination
+import com.example.dogwalkingservice.ui.appointment.AppointmentDetailsScreen
+import com.example.dogwalkingservice.ui.appointment.AppointmentOverviewDestination
+import com.example.dogwalkingservice.ui.appointment.AppointmentOverviewScreen
 import com.example.dogwalkingservice.ui.dog.DogAddScreen
 import com.example.dogwalkingservice.ui.dog.DogAddScreenDestination
 import com.example.dogwalkingservice.ui.dog.DogEditScreen
@@ -89,7 +95,7 @@ fun DogWalkingServiceNavGraph(
                     navController.navigate(SettingsOverviewDestination.route)
                 },
                 navigateToAppointmentScreen = {
-
+                    navController.navigate(AppointmentOverviewDestination.route)
                 }
             )
         }
@@ -197,6 +203,47 @@ fun DogWalkingServiceNavGraph(
             DogEditScreen(
                 navigateBack = {
                     // Navigate to the DogOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Overview appointment screen.
+        composable(route = AppointmentOverviewDestination.route) {
+            AppointmentOverviewScreen(
+                navigateBack = {
+                    // Navigate to the HomeScreenDogSitter in the BackStack.
+                    navController.navigateUp()
+                },
+                navigateToAddAppointment = {
+                    navController.navigate(AppointmentAddDestination.route)
+                },
+                navigateToDetailsAppointment = {
+                    navController.navigate("${AppointmentDetailsDestination.route}/${it}")
+                }
+            )
+        }
+
+        // Add appointment screen.
+        composable(route = AppointmentAddDestination.route) {
+            AppointmentAddScreen(
+                navigateBack = {
+                    // Navigate to the AppointmentOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Details appointment screen.
+        composable(
+            route = AppointmentDetailsDestination.routeWithAppointmentId,
+            arguments = listOf(navArgument(AppointmentDetailsDestination.appointmentId) {
+                type = NavType.IntType
+            })
+        ) {
+            AppointmentDetailsScreen(
+                navigateBack = {
+                    // Navigate to the AppointmentOverviewScreen in the BackStack.
                     navController.navigateUp()
                 }
             )

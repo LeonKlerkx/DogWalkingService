@@ -7,6 +7,9 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.dogwalkingservice.DogWalkingServiceApplication
+import com.example.dogwalkingservice.ui.appointment.AppointmentAddViewModel
+import com.example.dogwalkingservice.ui.appointment.AppointmentDetailsViewModel
+import com.example.dogwalkingservice.ui.appointment.AppointmentOverviewViewModel
 import com.example.dogwalkingservice.ui.dog.DogAddViewModel
 import com.example.dogwalkingservice.ui.dog.DogEditViewModel
 import com.example.dogwalkingservice.ui.dog.DogOverviewViewModel
@@ -85,6 +88,31 @@ object AppViewModelProvider {
                 hondenRepository = dogWalkingServiceApplication().container.hondenRepository,
                 userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository,
                 gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for AppointmentAddViewModel.
+        initializer {
+            AppointmentAddViewModel(
+                afsprakenRepository = dogWalkingServiceApplication().container.afsprakenRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository,
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for AppointmentOverviewViewModel.
+        initializer {
+            AppointmentOverviewViewModel(
+                afsprakenRepository = dogWalkingServiceApplication().container.afsprakenRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository,
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for AppointmentDetailsViewModel.
+        initializer {
+            AppointmentDetailsViewModel(
+                savedStateHandle = this.createSavedStateHandle(),
+                afsprakenRepository = dogWalkingServiceApplication().container.afsprakenRepository,
+                aanmeldenHondenRepository = dogWalkingServiceApplication().container.aanmeldenHondenRepository,
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository
             )
         }
     }
