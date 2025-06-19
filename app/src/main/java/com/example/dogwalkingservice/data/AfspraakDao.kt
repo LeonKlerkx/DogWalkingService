@@ -24,7 +24,7 @@ interface AfspraakDao {
     /**
      * Haalt alle afspraken van de geselecteerde oppasser op.
      */
-    @Query("SELECT * FROM Afspraak WHERE oppasser = :oppasser")
+    @Query("SELECT * FROM Afspraak WHERE oppasser = :oppasser ORDER BY beginmoment ASC")
     fun getAllAppointsmentsByOppasser(oppasser: String): Flow<List<Afspraak>>
 
     /**

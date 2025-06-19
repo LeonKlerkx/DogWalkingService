@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
     ])
 data class Afspraak (
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo("afspraakId")
     val afspraakId: Int,
 

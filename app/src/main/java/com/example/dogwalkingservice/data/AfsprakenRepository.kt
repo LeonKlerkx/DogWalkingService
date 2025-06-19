@@ -11,7 +11,7 @@ interface AfsprakenRepository {
 
     fun getAppointmentByPrimaryKey(afspraakId: Int): Flow<Afspraak>
 
-    fun getAllAppointmentByUser(oppasser: String): Flow<List<Afspraak?>>
+    fun getAllAppointmentByUser(oppasser: String): Flow<List<Afspraak>>
 
     fun checkIfTheAppointmentIsExists(beginmoment: String, eindmoment: String, oppasser: String): Flow<Afspraak?>
 

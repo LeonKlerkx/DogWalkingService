@@ -73,4 +73,33 @@
     <string name="alert_box_no">Nee</string>
     <string name="alert_box_yes">Ja</string>
 
+    <string name="appointment_overview_title">Afspraken overzicht</string>
+    <string name="appointment_text">Afspraak</string>
+    <string name="appointment_dog_sitter_name">Oppasser %s</string>
+    <string name="appointment_add_item_title">Afspraak toevoegen</string>
+
+    <string name="appointment_add_title">Afspraak toevoegen</string>
+    <string name="appointment_select_start_day">Selecteer begin dag</string>
+    <string name="appointment_choosed_start_day">De gekozen begin dag is %s</string>
+    <string name="appointment_select_start_time">Selecteer begin tijd</string>
+    <string name="appointment_choosed_start_time">De gekozen begin tijd is %s</string>
+    <string name="appointment_select_end_day">Selecteer eind dag</string>
+    <string name="appointment_choosed_end_day">De gekozen eind dag is %s</string>
+    <string name="appointment_select_end_time">Selecteer eind tijd</string>
+    <string name="appointment_choosed_end_time">De gekozen eind tijd is %s</string>
+
+    <string name="appointment_material_dialog_date_picker_title">Selecteer een dag</string>
+    <string name="appointment_material_dialog_time_picker_title">Selecteer een tijd</string>
+    <string name="appointment_material_dialog_positive_button">Save</string>
+    <string name="appointment_material_dialog_negative_button">Cancel</string>
+
+    <string name="appointment_add_save_button">Afspraak opslaan</string>
+
+
+    <string name="appointment_details_title">Afspraak details</string>
+    <string name="appointment_starting_moment">Beginmoment: %s</string>
+    <string name="appointment_end_moment">Eindmoment: %s\n</string>
+    <string name="appointment_no_sign_in_dogs">Geen aangemelde honden</string>
+    <string name="appointment_sign_in_dogs">Aangemelde honden:\n%s</string>
+    <string name="appointment_delete_button">Verwijder afspraak</string>
 </resources>

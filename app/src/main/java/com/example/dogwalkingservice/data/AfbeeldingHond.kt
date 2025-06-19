@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
     ])
 data class AfbeeldingHond (
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo("afbeelding_id")
     val afbeeldingId: Int,
 
