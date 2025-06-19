@@ -65,6 +65,9 @@ dependencies {
     // DataStore dependency.
     implementation(libs.androidx.datastore.preferences)
 
+    // Custom Date & Time Pickers dependency.
+    implementation(libs.io.github.vanpra.compose.material.dialogs.datetime)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
