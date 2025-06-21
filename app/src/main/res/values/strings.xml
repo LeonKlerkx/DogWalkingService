@@ -57,6 +57,7 @@
 
     <string name="no_item_description">Geen %s opgeslagen! Tab + om toe te voegen.</string>
     <string name="no_dogs">honden</string>
+    <string name="no_appointments">afspraken</string>
 
     <string name="dog_overview_title">Honden overzicht</string>
     <string name="dog_overview_dog_name">Naam: %s</string>

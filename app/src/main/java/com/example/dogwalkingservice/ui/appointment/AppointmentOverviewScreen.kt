@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
@@ -80,7 +81,7 @@ fun AppointmentOverviewScreen(
             }
         }
     ) { paddingValues ->
-        AppointmentListView(
+        AppointmentScreen(
             contentPadding = paddingValues,
             appointmentList = getAppointmentList,
             onAppointmentClick = navigateToDetailsAppointment
@@ -89,10 +90,35 @@ fun AppointmentOverviewScreen(
 }
 
 @Composable
-fun AppointmentListView(
+fun AppointmentScreen(
     contentPadding: PaddingValues,
     appointmentList: List<Afspraak>,
     onAppointmentClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (appointmentList.isEmpty()) {
+        Text(
+            text = stringResource(R.string.no_item_description, stringResource(R.string.no_appointments)),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = modifier.padding(contentPadding) // Show the text on the screen.
+        )
+    }
+    else {
+        AppointmentList(
+            contentPadding = contentPadding,
+            appointmentList = appointmentList,
+            onAppointmentClick = { onAppointmentClick(it.afspraakId) }
+        )
+    }
+
+}
+
+@Composable
+fun AppointmentList(
+    contentPadding: PaddingValues,
+    appointmentList: List<Afspraak>,
+    onAppointmentClick: (Afspraak) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -104,7 +130,7 @@ fun AppointmentListView(
                 appointment = appointment,
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_small))
-                    .clickable { onAppointmentClick(appointment.afspraakId) }
+                    .clickable { onAppointmentClick(appointment) }
             )
         }
     }
