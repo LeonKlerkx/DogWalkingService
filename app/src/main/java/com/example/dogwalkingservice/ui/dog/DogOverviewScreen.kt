@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -90,7 +91,7 @@ fun DogOverviewScreen(
             }
         }
         ) { paddingValues ->
-            DogListView(
+            DogScreen(
                 contentPadding = paddingValues,
                 dogList = getDogList,
                 onDogClick = navigateToEditDog
@@ -99,10 +100,33 @@ fun DogOverviewScreen(
 }
 
 @Composable
-fun DogListView(
+fun DogScreen(
     contentPadding: PaddingValues,
     dogList: List<Hond>,
     onDogClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (dogList.isEmpty()) {
+        Text(
+            text = stringResource(R.string.no_item_description, stringResource(R.string.no_dogs)),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = modifier.padding(contentPadding) // Show the text on the screen.
+        )
+    } else {
+        DogList(
+            contentPadding = contentPadding,
+            dogList = dogList,
+            onDogClick = { onDogClick(it.chipNummer) }
+        )
+    }
+}
+
+@Composable
+fun DogList(
+    contentPadding: PaddingValues,
+    dogList: List<Hond>,
+    onDogClick: (Hond) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -114,7 +138,7 @@ fun DogListView(
                 dog = dog,
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_small))
-                    .clickable { onDogClick(dog.chipNummer) }
+                    .clickable { onDogClick(dog) }
             )
         }
     }
@@ -160,11 +184,23 @@ fun DogListPreview() {
         val dog1 = Hond("NEDFLO570342401", "Spike", "Shiba", owner1.gebruikersnaam)
         val dog2 = Hond("NEDSPY460166719", "Spy", "Golden Retriever", owner1.gebruikersnaam)
         val dog3 = Hond("NEDGUS247019698", "Guus", "Rottweiler", owner2.gebruikersnaam)
-        DogListView(
+        DogScreen(
             contentPadding = PaddingValues(0.dp),
             dogList = listOf(
                 dog1, dog2, dog3
             ),
+            onDogClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun DogEmptyListPreview() {
+    DogWalkingServiceTheme {
+        DogScreen(
+            contentPadding = PaddingValues(0.dp),
+            dogList = listOf(),
             onDogClick = {}
         )
     }
