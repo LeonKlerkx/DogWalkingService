@@ -1,6 +1,7 @@
 package com.example.dogwalkingservice.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -23,4 +24,7 @@ interface AanmeldenHondDao {
      */
     @Query("SELECT * FROM AanmeldenHond WHERE chipnummer = :chipnummer")
     fun getAllAppointmentFromOneDog(chipnummer: String): Flow<List<AanmeldenHond>>
+
+    @Delete
+    suspend fun delete(signInDog: AanmeldenHond)
 }

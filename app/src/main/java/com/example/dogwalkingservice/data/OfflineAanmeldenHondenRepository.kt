@@ -11,4 +11,7 @@ class OfflineAanmeldenHondenRepository(private val aanmeldenHondDao: AanmeldenHo
 
     override fun getAllAppointmentFromOneDog(chipnummer: String) =
         aanmeldenHondDao.getAllAppointmentFromOneDog(chipnummer)
+
+    override suspend fun delete(signInDog: AanmeldenHond) =
+        aanmeldenHondDao.delete(signInDog)
 }

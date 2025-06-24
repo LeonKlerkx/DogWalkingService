@@ -12,4 +12,6 @@ interface AanmeldenHondenRepository {
     fun getAllSignInDogsFromAnAppointment(afspraakId: Int): Flow<List<AanmeldenHond>>
 
     fun getAllAppointmentFromOneDog(chipnummer: String): Flow<List<AanmeldenHond>>
+
+    suspend fun delete(signInDog: AanmeldenHond)
 }
