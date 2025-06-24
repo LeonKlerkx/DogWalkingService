@@ -19,6 +19,10 @@ import com.example.dogwalkingservice.ui.dog.DogEditScreen
 import com.example.dogwalkingservice.ui.dog.DogEditScreenDestination
 import com.example.dogwalkingservice.ui.dog.DogOverviewDestination
 import com.example.dogwalkingservice.ui.dog.DogOverviewScreen
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInDetailsDestination
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInDetailsScreen
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInOverviewDestination
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInOverviewScreen
 import com.example.dogwalkingservice.ui.home.HomeScreenDogSitter
 import com.example.dogwalkingservice.ui.home.HomeScreenDogSitterDestination
 import com.example.dogwalkingservice.ui.home.HomeScreenOwner
@@ -83,7 +87,7 @@ fun DogWalkingServiceNavGraph(
                     navController.navigate(DogOverviewDestination.route)
                 },
                 navigateToAddDogToAnAppointment = {
-
+                    navController.navigate(DogSignInOverviewDestination.route)
                 }
             )
         }
@@ -244,6 +248,46 @@ fun DogWalkingServiceNavGraph(
             AppointmentDetailsScreen(
                 navigateBack = {
                     // Navigate to the AppointmentOverviewScreen in the BackStack.
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // Overview Sign in dog to an appointment screen.
+        composable(route = DogSignInOverviewDestination.route) {
+            DogSignInOverviewScreen(
+                navigateBack = {
+                    // Navigate to the HomeScreenOwner in the BackStack.
+                    navController.navigateUp()
+                },
+                navigateToAddSignInDog = {
+
+                },
+                navigateToDetailsAppointment = {
+                    navController.navigate(
+                        //"${DogSignInDetailsDestination.route}/${1}")///${it.chipnummer}")
+                        //"${DogSignInDetailsDestination.route}/${it.chipnummer}")
+                        "${DogSignInDetailsDestination.route}/${it.afspraakId}/${it.chipnummer}")
+                }
+            )
+        }
+
+        // Details appointment with all sign in dogs screen.
+        composable(route = DogSignInDetailsDestination.routeWithAppointmentIdAndChipNumber,
+            arguments = listOf(
+                // PK afspraak.
+                navArgument(DogSignInDetailsDestination.appointmentId) {
+                type = NavType.IntType
+            },
+                // PK hond.
+                navArgument(DogSignInDetailsDestination.chipNumber) {
+                    type = NavType.StringType
+            })
+        )
+        {
+            DogSignInDetailsScreen(
+                navigateBack = {
+                    // Navigate to the DogSignInOverview in the BackStack.
                     navController.navigateUp()
                 }
             )

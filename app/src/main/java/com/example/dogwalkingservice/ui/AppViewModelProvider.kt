@@ -13,6 +13,8 @@ import com.example.dogwalkingservice.ui.appointment.AppointmentOverviewViewModel
 import com.example.dogwalkingservice.ui.dog.DogAddViewModel
 import com.example.dogwalkingservice.ui.dog.DogEditViewModel
 import com.example.dogwalkingservice.ui.dog.DogOverviewViewModel
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInDetailsViewModel
+import com.example.dogwalkingservice.ui.dogsignin.DogSignInOverviewViewModel
 import com.example.dogwalkingservice.ui.home.HomeScreenOwnerViewModel
 import com.example.dogwalkingservice.ui.login.LoginViewModel
 import com.example.dogwalkingservice.ui.password.PasswordViewModel
@@ -109,6 +111,24 @@ object AppViewModelProvider {
         // Initializer for AppointmentDetailsViewModel.
         initializer {
             AppointmentDetailsViewModel(
+                savedStateHandle = this.createSavedStateHandle(),
+                afsprakenRepository = dogWalkingServiceApplication().container.afsprakenRepository,
+                aanmeldenHondenRepository = dogWalkingServiceApplication().container.aanmeldenHondenRepository,
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository
+            )
+        }
+        // Initializer for DogSignInOverviewViewModel.
+        initializer {
+            DogSignInOverviewViewModel(
+                hondenRepository = dogWalkingServiceApplication().container.hondenRepository,
+                aanmeldenHondenRepository = dogWalkingServiceApplication().container.aanmeldenHondenRepository,
+                userPreferencesRepository = dogWalkingServiceApplication().userPreferencesRepository,
+                gebruikersRepository = dogWalkingServiceApplication().container.gebruikersRepository
+            )
+        }
+        // Initializer for DogSignInDetailsViewModel.
+        initializer {
+            DogSignInDetailsViewModel(
                 savedStateHandle = this.createSavedStateHandle(),
                 afsprakenRepository = dogWalkingServiceApplication().container.afsprakenRepository,
                 aanmeldenHondenRepository = dogWalkingServiceApplication().container.aanmeldenHondenRepository,
