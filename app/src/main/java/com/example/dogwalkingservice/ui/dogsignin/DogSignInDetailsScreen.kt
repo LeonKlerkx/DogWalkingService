@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dogwalkingservice.DogWalkingServiceTopAppBar
 import com.example.dogwalkingservice.R
-import com.example.dogwalkingservice.data.AanmeldenHond
 import com.example.dogwalkingservice.ui.AppViewModelProvider
 import com.example.dogwalkingservice.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
@@ -43,7 +42,6 @@ object DogSignInDetailsDestination : NavigationDestination {
     override val titleRes = R.string.dog_sign_in_details_title
     const val appointmentId = "appointmentId"
     const val chipNumber = "chipNumber"
-    val test = "$route/{$chipNumber}"
     val routeWithAppointmentIdAndChipNumber = "$route/{$appointmentId}/{$chipNumber}"
 }
 
@@ -70,9 +68,8 @@ fun DogSignInDetailsScreen(
     ) { paddingValues ->
         DogSignInDetailsBody(
             contentPadding = paddingValues,
-            signInDogList = getList.listOfAllSignInDogs,
-            selectedAppointment = viewModel.dogSignInDetailsUiState.geselecteerdeAfspraakID,
-            selectedDog = viewModel.dogSignInDetailsUiState.geselecteerdeChipnummer,
+            signInDogList = getList.signInDogList,
+            selectedDog = viewModel.dogSignInDetailsUiState.dog.hondnaam,
             deleteSignInDogFromTheAppointment = {
                 coroutineScope.launch {
                     val getResult = viewModel.deleteSignInDogFromTheAppointment()
@@ -89,8 +86,7 @@ fun DogSignInDetailsScreen(
 @Composable
 fun DogSignInDetailsBody(
     contentPadding: PaddingValues,
-    signInDogList: List<AanmeldenHond>,
-    selectedAppointment: Int,
+    signInDogList: MutableList<DogSignInProperties>,
     selectedDog: String,
     deleteSignInDogFromTheAppointment: () -> Unit,
     modifier: Modifier = Modifier
@@ -104,11 +100,30 @@ fun DogSignInDetailsBody(
             .padding(contentPadding)
             .verticalScroll(rememberScrollState())
     ) {
-        for (aanmeldenHond in signInDogList) {
+        Text(
+            text = stringResource(R.string.dog_sign_in_details_start_moment,
+             "${signInDogList.getOrNull(0)?.appointment?.beginmoment}")
+        )
+        Text(
+            text = stringResource(R.string.dog_sign_in_details_end_moment,
+                "${signInDogList.getOrNull(0)?.appointment?.eindmoment}")
+        )
+        Text(
+            text = stringResource(R.string.dog_sign_in_details_dog_sitter,
+                "${signInDogList.getOrNull(0)?.appointment?.oppasser}")
+        )
+
+        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)))
+
+        Text(
+            text = stringResource(R.string.dog_sign_in_details_sign_in_dogs)
+        )
+
+        Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)))
+
+        for (signInDog in signInDogList) {
             SignInDogItem(
-                signInDogItem = aanmeldenHond,
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_small))
+                signInDog = signInDog
             )
         }
 
@@ -118,8 +133,7 @@ fun DogSignInDetailsBody(
             onClick = { deleteDogFromAppointmentConfirmation = true },
             modifier = Modifier.fillMaxWidth()
         ) {
-        //    Text(text = "Afspraak $selectedAppointment - hond $selectedDog")
-            Text(text = "Verwijder aanmelding hond uit afspraak")
+            Text(text = stringResource(R.string.dog_sign_in_details_delete_dog_from_appointment))
         }
 
         if (deleteDogFromAppointmentConfirmation) {
@@ -140,22 +154,32 @@ fun DogSignInDetailsBody(
 
 @Composable
 fun SignInDogItem(
-    signInDogItem: AanmeldenHond,
+    signInDog: DogSignInProperties,
     modifier: Modifier = Modifier
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier.fillMaxSize()
+            .padding(
+                top = dimensionResource(R.dimen.padding_large),
+                bottom = dimensionResource(R.dimen.padding_large)
+            )
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
             modifier = Modifier.padding(dimensionResource(R.dimen.padding_large))
         ) {
             Text(
-                text = "AfspraakID: ${signInDogItem.afspraakId}"
+                text = stringResource(R.string.dog_sign_in_details_chip_number, signInDog.dog.chipNummer)
             )
             Text(
-                text = "Chipnummer: ${signInDogItem.chipNummer}"
+                text = stringResource(R.string.dog_sign_in_details_dog_name, signInDog.dog.hondnaam)
+            )
+            Text(
+                text = stringResource(R.string.dog_sign_in_details_dog_breed, signInDog.dog.hondenras)
+            )
+            Text(
+                text = stringResource(R.string.dog_sign_in_details_owner_dog, signInDog.dog.eigenaar)
             )
         }
     }

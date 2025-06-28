@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogwalkingservice.data.AanmeldenHond
 import com.example.dogwalkingservice.data.AanmeldenHondenRepository
+import com.example.dogwalkingservice.data.Afspraak
 import com.example.dogwalkingservice.data.AfsprakenRepository
+import com.example.dogwalkingservice.data.Hond
 import com.example.dogwalkingservice.data.HondenRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -47,22 +49,42 @@ class DogSignInDetailsViewModel(
                 .first()
                 .toDogSignInDetailsUistate()
 
+            // Get the whole selected appointment object.
+            val getAppointmentInfo = afsprakenRepository
+                .getAppointmentByPrimaryKey(afspraakId)
+                .first()
+
+            dogSignInDetailsUiState = dogSignInDetailsUiState.copy(
+                appointment = getAppointmentInfo
+            )
+
+            // Get the selected dog object.
+            val getDogInfo = hondenRepository
+                .getDogByPrimaryKey(chipNumber)
+                .first()
+            dogSignInDetailsUiState = dogSignInDetailsUiState.copy(
+                dog = getDogInfo
+            )
+
             /* Maakt een nieuwe lijst aan.
                De lijst wordt in the foreach gevuld met de aangemelde honden van de afspraak */
-            val test: MutableList<DogSignInProperties> = mutableListOf()
+            val listOfSignInDogs: MutableList<DogSignInProperties> = mutableListOf()
 
             // Walk through the list of sign in dogs from the appointment.
             for (signInDogs in dogSignInDetailsUiState.listOfAllSignInDogs) {
-                test.add(
+                val dog = hondenRepository.getDogByPrimaryKey(signInDogs.chipNummer).first()
+
+                listOfSignInDogs.add(
                     DogSignInProperties(
-                        afspraakID = signInDogs.afspraakId, chipNumber = signInDogs.chipNummer
+                        appointment = getAppointmentInfo,
+                        dog = dog
                     )
                 )
             }
 
             // Add the complete list to the UI State.
             dogSignInDetailsUiState = dogSignInDetailsUiState.copy(
-                ui = test,
+                signInDogList = listOfSignInDogs,
 
                 geselecteerdeAfspraakID = afspraakId,
                 geselecteerdeChipnummer = chipNumber
@@ -88,7 +110,13 @@ class DogSignInDetailsViewModel(
  */
 data class DogSignInDetailsUiState(
     val listOfAllSignInDogs: List<AanmeldenHond> = listOf(),
-    val ui: MutableList<DogSignInProperties> = mutableListOf(DogSignInProperties()),
+    val signInDogList: MutableList<DogSignInProperties> = mutableListOf(DogSignInProperties()),
+
+    val appointment: Afspraak = Afspraak(0, "", "", ""),
+
+    /* Get the dog object from the selected appointment to show the name of the dog
+       when you decide to delete the dog from the appointment. */
+    val dog: Hond = Hond("","","",""),
 
     // Is uit de LazyColumn (OverviewScreen) geselecteerd.
     val geselecteerdeAfspraakID: Int = 0,
@@ -99,8 +127,8 @@ data class DogSignInDetailsUiState(
  * Represent one record to pair the appointment and chip number.
  */
 data class DogSignInProperties(
-    val afspraakID: Int = 0,
-    val chipNumber: String = "",
+    val appointment: Afspraak = Afspraak(0, "", "", ""),
+    val dog: Hond = Hond("", "", "", "")
 )
 
 /**

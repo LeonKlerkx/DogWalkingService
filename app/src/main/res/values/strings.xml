@@ -104,6 +104,16 @@
     <string name="dog_sign_in_add_title">Hond aan afspraak toevoegen</string>
     <string name="dog_sign_in_details_title">Afspraak details</string>
 
+    <string name="dog_sign_in_details_start_moment">Beginmoment: %s</string>
+    <string name="dog_sign_in_details_end_moment">Eindmoment: %s</string>
+    <string name="dog_sign_in_details_dog_sitter">Oppasser: %s</string>
+    <string name="dog_sign_in_details_sign_in_dogs">Aangemelde honden:</string>
+    <string name="dog_sign_in_details_delete_dog_from_appointment">Verwijder aanmelding hond uit afspraak</string>
+    <string name="dog_sign_in_details_chip_number">Chipnummer: %s</string>
+    <string name="dog_sign_in_details_dog_name">Hondnaam: %s</string>
+    <string name="dog_sign_in_details_dog_breed">Hondenras: %s</string>
+    <string name="dog_sign_in_details_owner_dog">Eigenaar: %s</string>
+
 
     <string name="appointment_details_title">Afspraak details</string>
     <string name="appointment_starting_moment">Beginmoment: %s</string>
