@@ -131,7 +131,7 @@ fun DogSignInList(
         contentPadding = contentPadding,
         modifier = modifier
     ) {
-        items(items = signInDogList, key = { it.chipnummer }) { signInDog ->
+        items (items = signInDogList) {signInDog ->
             DogSignInBody(
                 signInDog = signInDog,
                 modifier = Modifier
